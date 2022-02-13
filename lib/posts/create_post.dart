@@ -68,28 +68,16 @@ class _CreatePostState extends State<CreatePost> {
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             children: [
               SizedBox(height: 15.0),
-              StreamBuilder(
-                stream: usersRef.doc(currentUserId()).snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    UserModel user = UserModel.fromJson(snapshot.data.data());
-                    return ListTile(
-                      leading: CircleAvatar(
-                        radius: 25.0,
-                        backgroundImage: NetworkImage(user?.photoUrl),
-                      ),
-                      title: Text(
-                        user?.firstName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        user?.email,
-                      ),
-                    );
-                  }
-                  return Container();
-                },
+              TextFormField(
+                initialValue: viewModel.description,
+                decoration: InputDecoration(
+                  hintText: 'Make a post, image is optional',
+                  focusedBorder: UnderlineInputBorder(),
+                ),
+                maxLines: null,
+                onChanged: (val) => viewModel.setDescription(val),
               ),
+              SizedBox(height: 15.0),
               InkWell(
                 onTap: () => showImageChoices(context, viewModel),
                 child: Container(
@@ -127,15 +115,6 @@ class _CreatePostState extends State<CreatePost> {
                               fit: BoxFit.cover,
                             ),
                 ),
-              ),
-              TextFormField(
-                initialValue: viewModel.description,
-                decoration: InputDecoration(
-                  hintText: 'Caption',
-                  focusedBorder: UnderlineInputBorder(),
-                ),
-                maxLines: null,
-                onChanged: (val) => viewModel.setDescription(val),
               ),
             ],
           ),

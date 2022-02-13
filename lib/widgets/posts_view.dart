@@ -33,7 +33,7 @@ class _PostsState extends State<Posts> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-            CupertinoPageRoute(builder: (_) => ViewImage(post: widget.post)));
+            CupertinoPageRoute(builder: (_) => Comments(post: widget.post)));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -44,11 +44,11 @@ class _PostsState extends State<Posts> {
           mainAxisSize: MainAxisSize.min,
           children: [
             buildPostHeader(),
-            Container(
+            widget.post.mediaUrl.isNotEmpty ? Container(
               height: 320.0,
               width: MediaQuery.of(context).size.width - 18.0,
               child: cachedNetworkImage(widget.post.mediaUrl),
-            ),
+            ) : Container(),
             Flexible(
               child: ListTile(
                 contentPadding:
@@ -104,7 +104,9 @@ class _PostsState extends State<Posts> {
                     ],
                   ),
                 ),
-                trailing: Wrap(
+                trailing: Container(
+                  width: 100,
+                  child: Wrap(
                   children: [
                     buildLikeButton(),
                     IconButton(
@@ -120,6 +122,7 @@ class _PostsState extends State<Posts> {
                       },
                     ),
                   ],
+                ),
                 ),
               ),
             ),
@@ -156,7 +159,10 @@ class _PostsState extends State<Posts> {
     bool isMe = currentUserId() == widget.post.ownerId;
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-      leading: buildUserDp(),
+      leading: Container(
+        width: 50,
+        child: buildUserDp()
+      ),
       title: Text(
         widget.post.firstName,
         style: TextStyle(fontWeight: FontWeight.bold),

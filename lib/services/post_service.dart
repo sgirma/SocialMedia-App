@@ -6,7 +6,6 @@ import 'package:enawra/models/user.dart';
 import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/services/services.dart';
 import 'package:enawra/utils/firebase.dart';
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class PostService extends Service {
@@ -119,15 +118,8 @@ class PostService extends Service {
   }
 
 //add the likes to the notfication collection
-  addLikesToNotification(
-      String type,
-      String firstName,
-      String lastName,
-      String userId,
-      String postId,
-      String mediaUrl,
-      String ownerId,
-      String userDp) async {
+  addLikesToNotification(String type, String firstName, String lastName, String userId,
+      String postId, String mediaUrl, String ownerId, String userDp) async {
     await notificationRef
         .doc(ownerId)
         .collection('notifications')

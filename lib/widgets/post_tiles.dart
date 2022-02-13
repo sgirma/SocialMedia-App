@@ -1,3 +1,4 @@
+import 'package:enawra/screens/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:enawra/models/post.dart';
@@ -19,7 +20,7 @@ class _PostTileState extends State<PostTile> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(CupertinoPageRoute(
-          builder: (_) => ViewImage(post: widget.post),
+          builder: (_) => Comments(post: widget.post),
         ));
       },
       child: Container(

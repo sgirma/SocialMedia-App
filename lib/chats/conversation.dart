@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,13 +50,6 @@ class _ConversationState extends State<Conversation> {
           (focusNode.hasFocus && messageController.text.isEmpty)) {
         setTyping(false);
       }
-    });
-
-    // keyInitMyCtx = 0;
-    Timer(const Duration(seconds: 4), () {
-      setState(() {
-        // keyInitMyCtx = 1;
-      });
     });
   }
 

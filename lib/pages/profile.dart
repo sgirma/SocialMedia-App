@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:enawra/components/stream_grid_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:enawra/auth/register/register.dart';
 import 'package:enawra/components/stream_builder_wrapper.dart';
+import 'package:enawra/components/stream_grid_wrapper.dart';
 import 'package:enawra/models/post.dart';
 import 'package:enawra/models/user.dart';
 import 'package:enawra/screens/edit_profile.dart';
@@ -294,19 +294,17 @@ class _ProfileState extends State<Profile>  {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       child: Row(
                         children: [
                           Text(
                             'All Posts',
                             style: TextStyle(fontWeight: FontWeight.w900),
                           ),
-                          Spacer(),
-                          buildIcons(),
                         ],
                       ),
                     ),
-                    buildPostView()
+                    buildPosts()
                   ],
                 );
               },
@@ -495,14 +493,6 @@ class _ProfileState extends State<Profile>  {
     });
   }
 
-  buildPostView() {
-    if (isToggle == true) {
-      return buildGridPost();
-    } else if (isToggle == false) {
-      return buildPosts();
-    }
-  }
-
   buildPosts() {
     return StreamBuilderWrapper(
       shrinkWrap: true,
@@ -519,24 +509,6 @@ class _ProfileState extends State<Profile>  {
           child: Posts(
             post: posts,
           ),
-        );
-      },
-    );
-  }
-
-  buildGridPost() {
-    return StreamGridWrapper(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      stream: postRef
-          .where('ownerId', isEqualTo: widget.profileId)
-          .orderBy('timestamp', descending: true)
-          .snapshots(),
-      physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (_, DocumentSnapshot snapshot) {
-        PostModel posts = PostModel.fromJson(snapshot.data());
-        return PostTile(
-          post: posts,
         );
       },
     );
