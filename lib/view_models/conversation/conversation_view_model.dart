@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media_app/models/message.dart';
-import 'package:social_media_app/services/chat_service.dart';
+import 'package:enawra/models/message.dart';
+import 'package:enawra/services/chat_service.dart';
 
 class ConversationViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -19,6 +19,12 @@ class ConversationViewModel extends ChangeNotifier {
       message,
       chatId,
     );
+  }
+
+  Future<String> getChatId(String recipient) async {
+    String newChatId = await chatService.getChatId(recipient);
+
+    return newChatId;
   }
 
   Future<String> sendFirstMessage(String recipient, Message message) async {
@@ -59,7 +65,7 @@ class ConversationViewModel extends ChangeNotifier {
         ],
         androidUiSettings: AndroidUiSettings(
           toolbarTitle: 'Crop image',
-          toolbarColor: Theme.of(context).appBarTheme.color,
+          toolbarColor: Theme.of(context).appBarTheme.backgroundColor,
           toolbarWidgetColor: Theme.of(context).iconTheme.color,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false,

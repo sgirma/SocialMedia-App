@@ -3,16 +3,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_media_app/components/custom_card.dart';
-import 'package:social_media_app/components/custom_image.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/pages/profile.dart';
-import 'package:social_media_app/screens/comment.dart';
-import 'package:social_media_app/screens/view_image.dart';
-import 'package:social_media_app/services/post_service.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/components/custom_card.dart';
+import 'package:enawra/components/custom_image.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/pages/profile.dart';
+import 'package:enawra/screens/comment.dart';
+import 'package:enawra/screens/view_image.dart';
+import 'package:enawra/services/post_service.dart';
+import 'package:enawra/utils/firebase.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class UserPost extends StatelessWidget {
@@ -35,13 +34,11 @@ class UserPost extends StatelessWidget {
       child: OpenContainer(
         transitionType: ContainerTransitionType.fadeThrough,
         openBuilder: (BuildContext context, VoidCallback _) {
-          return ViewImage(post: post);
+          return Comments(post: post);
         },
         closedElevation: 0.0,
         closedShape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
+          borderRadius: BorderRadius.zero,
         ),
         onClosed: (v) {},
         closedColor: Theme.of(context).cardColor,
@@ -52,15 +49,15 @@ class UserPost extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0),
+                      topLeft: Radius.circular(0.0),
+                      topRight: Radius.circular(0.0),
                     ),
-                    child: CustomImage(
-                      imageUrl: post?.mediaUrl ?? '',
+                    child: post.mediaUrl.isNotEmpty ? CustomImage(
+                      imageUrl: post?.mediaUrl,
                       height: 300.0,
                       fit: BoxFit.cover,
                       width: double.infinity,
-                    ),
+                    ) : null,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.0),
@@ -154,7 +151,6 @@ class UserPost extends StatelessWidget {
                           child: Text(timeago.format(post.timestamp.toDate()),
                               style: TextStyle(fontSize: 10.0)),
                         ),
-                        // SizedBox(height: 5.0),
                       ],
                     ),
                   )
@@ -213,7 +209,7 @@ class UserPost extends StatelessWidget {
     if (isNotMe) {
       DocumentSnapshot doc = await usersRef.doc(currentUserId()).get();
       user = UserModel.fromJson(doc.data());
-      services.addLikesToNotification("like", user.username, currentUserId(),
+      services.addLikesToNotification("like", user.firstName, user.lastName, currentUserId(),
           post.postId, post.mediaUrl, post.ownerId, user.photoUrl);
     }
   }
@@ -257,10 +253,7 @@ class UserPost extends StatelessWidget {
                 height: 40.0,
                 decoration: BoxDecoration(
                   color: Colors.white60,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0),
-                  ),
+                  borderRadius: BorderRadius.zero
                 ),
                 child: GestureDetector(
                   onTap: () => showProfile(context, profileId: user?.id),
@@ -286,7 +279,7 @@ class UserPost extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${post?.username ?? ""}',
+                              '${post?.firstName ?? ""}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff4D4D4D),
@@ -294,7 +287,7 @@ class UserPost extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              '${post?.location ?? 'Wooble'}',
+                              '${post?.location ?? 'enawra'}',
                               style: TextStyle(
                                 fontSize: 10.0,
                                 color: Color(0xff4D4D4D),

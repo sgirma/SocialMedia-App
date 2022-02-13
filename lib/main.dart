@@ -1,13 +1,13 @@
+import 'package:enawra/auth/register/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/life_cycle_event_handler.dart';
-import 'package:social_media_app/landing/landing_page.dart';
-import 'package:social_media_app/screens/mainscreen.dart';
-import 'package:social_media_app/services/user_service.dart';
-import 'package:social_media_app/utils/config.dart';
-import 'package:social_media_app/utils/constants.dart';
-import 'package:social_media_app/utils/providers.dart';
+import 'package:enawra/components/life_cycle_event_handler.dart';
+import 'package:enawra/screens/mainscreen.dart';
+import 'package:enawra/services/user_service.dart';
+import 'package:enawra/utils/config.dart';
+import 'package:enawra/utils/constants.dart';
+import 'package:enawra/utils/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
                 if (snapshot.hasData) {
                   return TabScreen();
                 } else
-                  return Landing();
+                  return Register();
               },
             ),
           );

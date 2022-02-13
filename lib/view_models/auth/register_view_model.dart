@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/auth/register/profile_pic.dart';
-import 'package:social_media_app/services/auth_service.dart';
+import 'package:enawra/auth/register/profile_pic.dart';
+import 'package:enawra/services/auth_service.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
   bool loading = false;
-  String username, email, country, password, cPassword;
-  FocusNode usernameFN = FocusNode();
+  String firstName, lastName, email, country, password, cPassword;
+  FocusNode firstNameFN = FocusNode();
+  FocusNode lastNameFN = FocusNode();
   FocusNode emailFN = FocusNode();
   FocusNode countryFN = FocusNode();
   FocusNode passFN = FocusNode();
@@ -30,20 +31,16 @@ class RegisterViewModel extends ChangeNotifier {
         loading = true;
         notifyListeners();
         try {
-          bool success = await auth.createUser(
-            name: username,
-            email: email,
-            password: password,
-            country: country,
-          );
-          print(success);
-          if (success) {
-            Navigator.of(context).pushReplacement(
+          auth.createUser(firstName: firstName, lastName: lastName,
+            email: email, password: password, country: country);
+          // print(success);
+          // if (success) {
+            Navigator.of(scaffoldKey.currentContext).pushReplacement(
               CupertinoPageRoute(
                 builder: (_) => ProfilePicture(),
               ),
             );
-          }
+          // }
         } catch (e) {
           loading = false;
           notifyListeners();
@@ -69,8 +66,13 @@ class RegisterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setName(val) {
-    username = val;
+  setFirstName(val) {
+    firstName = val;
+    notifyListeners();
+  }
+
+  setLastName(val) {
+    lastName = val;
     notifyListeners();
   }
 

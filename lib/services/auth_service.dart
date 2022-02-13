@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/utils/firebase.dart';
 
 class AuthService {
   User getCurrentUser() {
@@ -10,7 +10,8 @@ class AuthService {
 
 //create a firebase user 
   Future<bool> createUser(
-      {String name,
+      {String firstName,
+        String lastName,
       User user,
       String email,
       String country,
@@ -20,7 +21,7 @@ class AuthService {
       password: '$password',
     );
     if (res.user != null) {
-      await saveUserToFirestore(name, res.user, email, country);
+      await saveUserToFirestore(firstName, lastName, res.user, email, country);
       return true;
     } else {
       return false;
@@ -29,9 +30,10 @@ class AuthService {
 
 //this will save the details inputted by the user to firestore.
   saveUserToFirestore(
-      String name, User user, String email, String country) async {
+      String firstName, String lastName, User user, String email, String country) async {
     await usersRef.doc(user.uid).set({
-      'username': name,
+      'firstName': firstName,
+      'lastName': lastName,
       'email': email,
       'time': Timestamp.now(),
       'id': user.uid,

@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enawra/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/custom_image.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/view_models/auth/posts_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/components/custom_image.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/view_models/auth/posts_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -41,7 +41,7 @@ class _CreatePostState extends State<CreatePost> {
                 Navigator.pop(context);
               },
             ),
-            title: Text('FlutterSocial'.toUpperCase()),
+            title: Text('enawra'),
             centerTitle: true,
             actions: [
               GestureDetector(
@@ -57,7 +57,7 @@ class _CreatePostState extends State<CreatePost> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15.0,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -65,7 +65,7 @@ class _CreatePostState extends State<CreatePost> {
             ],
           ),
           body: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(horizontal: 5.0),
             children: [
               SizedBox(height: 15.0),
               StreamBuilder(
@@ -79,7 +79,7 @@ class _CreatePostState extends State<CreatePost> {
                         backgroundImage: NetworkImage(user?.photoUrl),
                       ),
                       title: Text(
-                        user?.username,
+                        user?.firstName,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
@@ -98,10 +98,10 @@ class _CreatePostState extends State<CreatePost> {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.all(
-                      Radius.circular(5.0),
+                      Radius.zero,
                     ),
                     border: Border.all(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   child: viewModel.imgLink != null
@@ -116,7 +116,7 @@ class _CreatePostState extends State<CreatePost> {
                               child: Text(
                                 'Upload a Photo',
                                 style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             )
@@ -128,56 +128,14 @@ class _CreatePostState extends State<CreatePost> {
                             ),
                 ),
               ),
-              SizedBox(height: 20.0),
-              Text(
-                'Post Caption'.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
               TextFormField(
                 initialValue: viewModel.description,
                 decoration: InputDecoration(
-                  hintText: 'Eg. This is very beautiful place!',
+                  hintText: 'Caption',
                   focusedBorder: UnderlineInputBorder(),
                 ),
                 maxLines: null,
                 onChanged: (val) => viewModel.setDescription(val),
-              ),
-              SizedBox(height: 20.0),
-              Text(
-                'Location'.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.all(0.0),
-                title: Container(
-                  width: 250.0,
-                  child: TextFormField(
-                    controller: viewModel.locationTEC,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(0.0),
-                      hintText: 'United States,Los Angeles!',
-                      focusedBorder: UnderlineInputBorder(),
-                    ),
-                    maxLines: null,
-                    onChanged: (val) => viewModel.setLocation(val),
-                  ),
-                ),
-                trailing: IconButton(
-                  tooltip: "Use your current location",
-                  icon: Icon(
-                    CupertinoIcons.map_pin_ellipse,
-                    size: 25.0,
-                  ),
-                  iconSize: 30.0,
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => viewModel.getLocation(),
-                ),
               ),
             ],
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/utils/constants.dart';
+import 'package:enawra/utils/constants.dart';
 
 class Setting extends StatefulWidget {
   @override
@@ -38,7 +38,7 @@ class _SettingState extends State<Setting> {
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              subtitle: Text("A Fully Functional Social Media Application Made by CharlyKeleb"),
+              subtitle: Text("A Fully Functional Social Media Application"),
               trailing: Icon(Icons.error)
             ),
             Divider(),
@@ -56,7 +56,7 @@ class _SettingState extends State<Setting> {
                     notifier.toggleTheme();
                   },
                   value: notifier.dark,
-                  activeColor: Theme.of(context).accentColor,
+                  activeColor: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),

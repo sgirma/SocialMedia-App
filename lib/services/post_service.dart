@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/screens/view_image.dart';
-import 'package:social_media_app/services/services.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/screens/view_image.dart';
+import 'package:enawra/services/services.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class PostService extends Service {
@@ -22,7 +23,12 @@ class PostService extends Service {
 
 //uploads post to the post collection
   uploadPost(File image, String location, String description) async {
-    String link = await uploadImage(posts, image);
+    String link = "";
+
+    if (image != null) {
+      link = await uploadImage(posts, image);
+    }
+
     DocumentSnapshot doc =
         await usersRef.doc(firebaseAuth.currentUser.uid).get();
     user = UserModel.fromJson(doc.data());
@@ -30,11 +36,12 @@ class PostService extends Service {
     ref.set({
       "id": ref.id,
       "postId": ref.id,
-      "username": user.username,
+      "firstName": user.firstName,
+      "lastName": user.lastName,
       "ownerId": firebaseAuth.currentUser.uid,
       "mediaUrl": link,
       "description": description ?? "",
-      "location": location ?? "Wooble",
+      "location": location ?? "enawra",
       "timestamp": Timestamp.now(),
     }).catchError((e) {
       print(e);
@@ -51,7 +58,8 @@ class PostService extends Service {
     ref.set({
       "id": ref.id,
       "postId": ref.id,
-      "username": user.username,
+      "firstName": user.firstName,
+      "lastName": user.lastName,
       "ownerId": firebaseAuth.currentUser.uid,
       "mediaUrl": link,
       "description": description ?? "",
@@ -64,19 +72,25 @@ class PostService extends Service {
 //upload a comment
   uploadComment(String currentUserId, String comment, String postId,
       String ownerId, String mediaUrl) async {
+    if (comment.trim().isEmpty) {
+      return;
+    }
+
     DocumentSnapshot doc = await usersRef.doc(currentUserId).get();
     user = UserModel.fromJson(doc.data());
     await commentRef.doc(postId).collection("comments").add({
-      "username": user.username,
+      "firstName": user.firstName,
+      "lastName": user.lastName,
       "comment": comment,
       "timestamp": Timestamp.now(),
       "userDp": user.photoUrl,
       "userId": user.id,
     });
     bool isNotMe = ownerId != currentUserId;
+
     if (isNotMe) {
-      addCommentToNotification("comment", comment, user.username, user.id,
-          postId, mediaUrl, ownerId, user.photoUrl);
+      addCommentToNotification("comment", comment, user.firstName,
+          user.lastName, user.id, postId, mediaUrl, ownerId, user.photoUrl);
     }
   }
 
@@ -84,7 +98,8 @@ class PostService extends Service {
   addCommentToNotification(
       String type,
       String commentData,
-      String username,
+      String firstName,
+      String lastName,
       String userId,
       String postId,
       String mediaUrl,
@@ -93,7 +108,8 @@ class PostService extends Service {
     await notificationRef.doc(ownerId).collection('notifications').add({
       "type": type,
       "commentData": commentData,
-      "username": username,
+      "firstName": firstName,
+      "lastName": lastName,
       "userId": userId,
       "userDp": userDp,
       "postId": postId,
@@ -103,15 +119,23 @@ class PostService extends Service {
   }
 
 //add the likes to the notfication collection
-  addLikesToNotification(String type, String username, String userId,
-      String postId, String mediaUrl, String ownerId, String userDp) async {
+  addLikesToNotification(
+      String type,
+      String firstName,
+      String lastName,
+      String userId,
+      String postId,
+      String mediaUrl,
+      String ownerId,
+      String userDp) async {
     await notificationRef
         .doc(ownerId)
         .collection('notifications')
         .doc(postId)
         .set({
       "type": type,
-      "username": username,
+      "firstName": firstName,
+      "lastName": lastName,
       "userId": firebaseAuth.currentUser.uid,
       "userDp": userDp,
       "postId": postId,

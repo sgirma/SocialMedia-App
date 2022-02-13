@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/components/custom_card.dart';
+import 'package:enawra/components/custom_card.dart';
 
 class TextFormBuilder extends StatefulWidget {
   final String initialValue;
@@ -54,8 +54,8 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
             child: Container(
               child: Theme(
                 data: ThemeData(
-                  primaryColor: Theme.of(context).accentColor,
-                  accentColor: Theme.of(context).accentColor,
+                  primaryColor: Theme.of(context).colorScheme.secondary,
+                  accentColor: Theme.of(context).colorScheme.secondary,
                 ),
                 child: TextFormField(
                   textCapitalization: TextCapitalization.sentences,
@@ -150,7 +150,7 @@ class _TextFormBuilderState extends State<TextFormBuilder> {
         Radius.circular(30.0),
       ),
       borderSide: BorderSide(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         width: 1.0,
       ),
     );

@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/services/user_service.dart';
-import 'package:social_media_app/utils/constants.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/services/user_service.dart';
+import 'package:enawra/utils/constants.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -17,7 +17,8 @@ class EditProfileViewModel extends ChangeNotifier {
   final picker = ImagePicker();
   UserModel user;
   String country;
-  String username;
+  String firstName;
+  String lastName;
   String bio;
   File image;
   String imgLink;
@@ -43,9 +44,15 @@ class EditProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setUsername(String val) {
-    print('SetUsername$val');
-    username = val;
+  setFirstName(String val) {
+    print('SetFirstName$val');
+    firstName = val;
+    notifyListeners();
+  }
+
+  setLastName(String val) {
+    print('SetLastName$val');
+    lastName = val;
     notifyListeners();
   }
 
@@ -61,9 +68,9 @@ class EditProfileViewModel extends ChangeNotifier {
         loading = true;
         notifyListeners();
         bool success = await userService.updateProfile(
-        //  user: user,
           image: image,
-          username: username,
+          firstName: firstName,
+          lastName: lastName,
           bio: bio,
           country: country,
         );

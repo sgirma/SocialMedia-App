@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/notification.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/view_notification_details.dart';
+import 'package:enawra/models/notification.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/view_notification_details.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 class ActivityItems extends StatefulWidget {
   final ActivityModel activity;
@@ -48,7 +48,7 @@ class _ActivityItemsState extends State<ActivityItems> {
                 ),
                 children: [
                   TextSpan(
-                    text: '${widget.activity.username} ',
+                    text: '${widget.activity.firstName} ',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 10.0),
                   ),
@@ -74,7 +74,7 @@ class _ActivityItemsState extends State<ActivityItems> {
     return Container(
       alignment: Alignment.centerRight,
       padding: EdgeInsets.only(right: 20.0),
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).colorScheme.secondary,
       child: Icon(
         CupertinoIcons.delete,
         color: Colors.white,

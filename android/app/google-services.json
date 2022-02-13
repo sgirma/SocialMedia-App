@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "780820743732",
-    "firebase_url": "https://social-app-e1319.firebaseio.com",
-    "project_id": "social-app-e1319",
-    "storage_bucket": "social-app-e1319.appspot.com"
+    "project_number": "778289130510",
+    "project_id": "enawra-20bd4",
+    "storage_bucket": "enawra-20bd4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:780820743732:android:c9bda4d1d3f2298c88ec61",
+        "mobilesdk_app_id": "1:778289130510:android:6d44fea49ed1d742e1a05f",
         "android_client_info": {
-          "package_name": "com.example.social_media_app"
+          "package_name": "com.veldteck.enawra"
         }
       },
       "oauth_client": [
         {
-          "client_id": "780820743732-h8kvhuspqptk47fvvjih14m7qe4co2sh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.social_media_app",
-            "certificate_hash": "00a293a4d4d2c32595bb76f673fbfbda65edb065"
-          }
-        },
-        {
-          "client_id": "780820743732-m8a5s06sg56rj69hb1bduk7k1ihd6n3h.apps.googleusercontent.com",
+          "client_id": "778289130510-gsshouq4sta84eabq40j974o3imbqu08.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA_0yQRvZDLcQ-78TMjA8I1JNSH0JsHNMw"
+          "current_key": "AIzaSyAkW8safCorgWiLpNKHDZpnwnq1HUehe5w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "780820743732-m8a5s06sg56rj69hb1bduk7k1ihd6n3h.apps.googleusercontent.com",
+              "client_id": "778289130510-gsshouq4sta84eabq40j974o3imbqu08.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

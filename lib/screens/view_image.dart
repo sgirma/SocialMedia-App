@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/indicators.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ViewImage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _ViewImageState extends State<ViewImage> {
                 Column(
                   children: [
                     Text(
-                      widget.post.username,
+                      widget.post.firstName,
                       style: TextStyle(fontWeight: FontWeight.w800),
                     ),
                     SizedBox(height: 3.0),
@@ -99,7 +99,8 @@ class _ViewImageState extends State<ViewImage> {
           .doc(widget.post.postId)
           .set({
         "type": "like",
-        "username": user.username,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
         "userId": currentUserId(),
         "userDp": user.photoUrl,
         "postId": widget.post.postId,

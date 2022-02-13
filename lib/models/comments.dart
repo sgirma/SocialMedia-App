@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentModel {
-  String username;
+  String firstName;
+  String lastName;
   String comment;
   Timestamp timestamp;
   String userDp;
   String userId;
 
   CommentModel({
-    this.username,
+    this.firstName,
+    this.lastName,
     this.comment,
     this.timestamp,
     this.userDp,
@@ -16,7 +18,8 @@ class CommentModel {
   });
 
   CommentModel.fromJson(Map<String, dynamic> json) {
-    username = json['username'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
     comment = json['comment'];
     timestamp = json['timestamp'];
     userDp = json['userDp'];
@@ -25,7 +28,8 @@ class CommentModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this.username;
+    data['firstName'] = this.firstName;
+    data['lastName'] = this.lastName;
     data['comment'] = this.comment;
     data['timestamp'] = this.timestamp;
     data['userDp'] = this.userDp;

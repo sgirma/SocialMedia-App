@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/chats/conversation.dart';
-import 'package:social_media_app/components/text_time.dart';
-import 'package:social_media_app/models/enum/message_type.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/chats/conversation.dart';
+import 'package:enawra/components/text_time.dart';
+import 'package:enawra/models/enum/message_type.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/utils/firebase.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatItem extends StatelessWidget {
@@ -40,13 +40,11 @@ class ChatItem extends StatelessWidget {
 
           return ListTile(
             contentPadding:
-                EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+                EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
             leading: Stack(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                    '${user?.photoUrl}',
-                  ),
+                  backgroundImage: user.photoUrl.isNotEmpty ? CachedNetworkImageProvider('${user?.photoUrl}') : null,
                   radius: 25.0,
                 ),
                 Positioned(
@@ -76,7 +74,7 @@ class ChatItem extends StatelessWidget {
               ],
             ),
             title: Text(
-              '${user.username}',
+              '${user.firstName}',
               maxLines: 1,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -87,22 +85,25 @@ class ChatItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
             ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                SizedBox(height: 10),
-                TextTime(
-                  child: Text(
-                    "${timeago.format(time.toDate())}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 11,
+            trailing: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: 10),
+                  TextTime(
+                    child: Text(
+                      "${timeago.format(time.toDate())}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 11,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 5),
-                buildCounter(context),
-              ],
+                  SizedBox(height: 5),
+                  buildCounter(context),
+                ],
+              ),
             ),
             onTap: () {
               Navigator.of(context, rootNavigator: true).push(
@@ -130,9 +131,9 @@ class ChatItem extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           DocumentSnapshot snap = snapshot.data;
-          Map usersReads = snap.get('reads') ?? {};
-          int readCount = usersReads[currentUserId] ?? 0;
-          int counter = messageCount - readCount;
+          // Map usersReads = snap.get('reads') ?? new Map();
+          // int readCount = usersReads[currentUserId] ?? 0;
+          int counter = messageCount - messageCount;
           if (counter == 0) {
             return SizedBox();
           } else {

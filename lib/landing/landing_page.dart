@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/auth/login/login.dart';
-import 'package:social_media_app/auth/register/register.dart';
+import 'package:enawra/auth/login/login.dart';
+import 'package:enawra/auth/register/register.dart';
 
 class Landing extends StatefulWidget {
   @override
@@ -23,21 +23,13 @@ class _LandingState extends State<Landing> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Image.asset(
-                  'assets/images/new1.png',
+                  'assets/images/enawra.png',
                   height: 200.0,
                   width: 200.0,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            Text(
-              'WOOBLE',
-              style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Ubuntu-Regular',
-              ),
-            )
           ],
         ),
       ),
@@ -66,8 +58,8 @@ class _LandingState extends State<Landing> {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        Theme.of(context).accentColor,
-                        Color(0xff597FDB),
+                        Theme.of(context).colorScheme.secondary,
+                        Color(0xffDA121A),
                       ],
                     ),
                   ),
@@ -97,8 +89,8 @@ class _LandingState extends State<Landing> {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        Theme.of(context).accentColor,
-                        Color(0xff597FDB),
+                        Theme.of(context).colorScheme.secondary,
+                        Color(0xffDA121A),
                       ],
                     ),
                   ),

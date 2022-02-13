@@ -6,12 +6,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/screens/mainscreen.dart';
-import 'package:social_media_app/services/post_service.dart';
-import 'package:social_media_app/services/user_service.dart';
-import 'package:social_media_app/utils/constants.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/screens/mainscreen.dart';
+import 'package:enawra/services/post_service.dart';
+import 'package:enawra/services/user_service.dart';
+import 'package:enawra/utils/constants.dart';
+import 'package:enawra/utils/firebase.dart';
 
 class PostsViewModel extends ChangeNotifier {
   //Services
@@ -24,7 +24,8 @@ class PostsViewModel extends ChangeNotifier {
 
   //Variables
   bool loading = false;
-  String username;
+  String firstName;
+  String lastName;
   File mediaUrl;
   final picker = ImagePicker();
   String location;
@@ -65,9 +66,15 @@ class PostsViewModel extends ChangeNotifier {
     }
   }
 
-  setUsername(String val) {
-    print('SetName $val');
-    username = val;
+  setFirstname(String val) {
+    print('SetFirstName $val');
+    firstName = val;
+    notifyListeners();
+  }
+
+  setLastname(String val) {
+    print('SetLastName $val');
+    lastName = val;
     notifyListeners();
   }
 

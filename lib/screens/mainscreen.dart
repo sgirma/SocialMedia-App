@@ -2,12 +2,11 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_media_app/components/fab_container.dart';
-import 'package:social_media_app/pages/notification.dart';
-import 'package:social_media_app/pages/profile.dart';
-import 'package:social_media_app/pages/search.dart';
-import 'package:social_media_app/pages/feeds.dart';
-import 'package:social_media_app/utils/firebase.dart';
+import 'package:enawra/chats/recent_chats.dart';
+import 'package:enawra/components/fab_container.dart';
+import 'package:enawra/pages/notification.dart';
+import 'package:enawra/pages/feeds.dart';
+import 'package:enawra/pages/search_posts.dart';
 
 class TabScreen extends StatefulWidget {
   @override
@@ -25,9 +24,9 @@ class _TabScreenState extends State<TabScreen> {
       'index': 0,
     },
     {
-      'title': 'Search',
-      'icon': Feather.search,
-      'page': Search(),
+      'title': 'Chats',
+      'icon': CupertinoIcons.chat_bubble_2_fill,
+      'page': Chats(),
       'index': 1,
     },
     {
@@ -37,15 +36,15 @@ class _TabScreenState extends State<TabScreen> {
       'index': 2,
     },
     {
-      'title': 'Notification',
-      'icon': CupertinoIcons.bell_solid,
-      'page': Activities(),
+      'title': 'Search',
+      'icon': Feather.search,
+      'page': SearchPosts(),
       'index': 3,
     },
     {
-      'title': 'Profile',
-      'icon': CupertinoIcons.person,
-      'page': Profile(profileId: firebaseAuth.currentUser.uid),
+      'title': 'Notification',
+      'icon': CupertinoIcons.bell_solid,
+      'page': Activities(),
       'index': 4,
     },
   ];
@@ -84,7 +83,7 @@ class _TabScreenState extends State<TabScreen> {
                           item['icon'],
                           color: item['index'] != _page
                               ? Colors.grey
-                              : Theme.of(context).accentColor,
+                              : Theme.of(context).colorScheme.secondary,
                           size: 20.0,
                         ),
                         onPressed: () => navigationTapped(item['index']),

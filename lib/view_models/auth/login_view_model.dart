@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/screens/mainscreen.dart';
-import 'package:social_media_app/services/auth_service.dart';
-import 'package:social_media_app/utils/validation.dart';
+import 'package:enawra/screens/mainscreen.dart';
+import 'package:enawra/services/auth_service.dart';
+import 'package:enawra/utils/validation.dart';
 
 class LoginViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

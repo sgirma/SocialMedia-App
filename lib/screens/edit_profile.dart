@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/text_form_builder.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/utils/validation.dart';
-import 'package:social_media_app/view_models/profile/edit_profile_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/components/text_form_builder.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/utils/validation.dart';
+import 'package:enawra/view_models/profile/edit_profile_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 class EditProfile extends StatefulWidget {
   final UserModel user;
@@ -48,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 15.0,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -124,13 +124,24 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             TextFormBuilder(
               enabled: !viewModel.loading,
-              initialValue: widget.user.username,
+              initialValue: widget.user.firstName,
               prefix: Feather.user,
-              hintText: "Username",
+              hintText: "First Name",
               textInputAction: TextInputAction.next,
               validateFunction: Validations.validateName,
               onSaved: (String val) {
-                viewModel.setUsername(val);
+                viewModel.setFirstName(val);
+              },
+            ),
+            TextFormBuilder(
+              enabled: !viewModel.loading,
+              initialValue: widget.user.lastName,
+              prefix: Feather.user,
+              hintText: "Last Name",
+              textInputAction: TextInputAction.next,
+              validateFunction: Validations.validateName,
+              onSaved: (String val) {
+                viewModel.setLastName(val);
               },
             ),
             SizedBox(height: 10.0),

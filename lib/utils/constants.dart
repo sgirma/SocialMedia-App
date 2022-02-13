@@ -3,15 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Constants {
   //App related strings
-  static String appName = "Social App";
+  static String appName = "enawra";
 
   //Colors for theme
   static Color lightPrimary = Color(0xfff3f4f9);
   static Color darkPrimary = Color(0xff2B2B2B);
 
-  static Color lightAccent = Color(0xff886EE4);
+  static Color lightAccent = Color(0xffEF3340);
 
-  static Color darkAccent = Color(0xff886EE4);
+  static Color darkAccent = Color(0xff009A44);
 
   static Color lightBG = Color(0xfff3f4f9);
   static Color darkBG = Color(0xff2B2B2B);
@@ -101,7 +101,7 @@ class ThemeNotifier extends ChangeNotifier {
 
   _loadfromPrefs() async {
     await _initPrefs();
-    _darkTheme = _prefs.getBool(key) ?? true;
+    _darkTheme = _prefs.getBool(key) ?? false;
     notifyListeners();
   }
 

@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enawra/components/stream_grid_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_media_app/auth/register/register.dart';
-import 'package:social_media_app/components/stream_builder_wrapper.dart';
-import 'package:social_media_app/components/stream_grid_wrapper.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/screens/edit_profile.dart';
-import 'package:social_media_app/screens/settings.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/post_tiles.dart';
-import 'package:social_media_app/widgets/posts_view.dart';
+import 'package:enawra/auth/register/register.dart';
+import 'package:enawra/components/stream_builder_wrapper.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/screens/edit_profile.dart';
+import 'package:enawra/screens/settings.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/post_tiles.dart';
+import 'package:enawra/widgets/posts_view.dart';
 
 class Profile extends StatefulWidget {
   final profileId;
@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile>  {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('WOOBLE'),
+        title: Text('enawra'),
         actions: [
           widget.profileId == firebaseAuth.currentUser.uid
               ? Center(
@@ -130,7 +130,7 @@ class _ProfileState extends State<Profile>  {
                                         Container(
                                           width: 130.0,
                                           child: Text(
-                                            user?.username,
+                                            user?.firstName,
                                             style: TextStyle(
                                                 fontSize: 15.0,
                                                 fontWeight: FontWeight.w900),
@@ -150,20 +150,6 @@ class _ProfileState extends State<Profile>  {
                                           ),
                                         ),
                                         SizedBox(width: 10.0),
-                                        Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              user?.email,
-                                              style: TextStyle(
-                                                // color: Color(0xff4D4D4D),
-                                                fontSize: 10.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
                                       ],
                                     ),
                                     widget.profileId == currentUserId()
@@ -179,7 +165,7 @@ class _ProfileState extends State<Profile>  {
                                               children: [
                                                 Icon(Feather.settings,
                                                     color: Theme.of(context)
-                                                        .accentColor),
+                                                        .colorScheme.secondary),
                                                 Text(
                                                   'settings',
                                                   style:
@@ -418,7 +404,7 @@ class _ProfileState extends State<Profile>  {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Theme.of(context).accentColor,
+                Theme.of(context).colorScheme.secondary,
                 Color(0xff597FDB),
               ],
             ),
@@ -501,7 +487,8 @@ class _ProfileState extends State<Profile>  {
         .set({
       "type": "follow",
       "ownerId": widget.profileId,
-      "username": users.username,
+      "firstName": users.firstName,
+      "lastName": users.lastName,
       "userId": users.id,
       "userDp": users.photoUrl,
       "timestamp": timestamp,

@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/components/stream_comments_wrapper.dart';
-import 'package:social_media_app/models/comments.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/services/post_service.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/cached_image.dart';
+import 'package:enawra/components/stream_comments_wrapper.dart';
+import 'package:enawra/models/comments.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/services/post_service.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/cached_image.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatefulWidget {
@@ -56,8 +56,8 @@ class _CommentsState extends State<Comments> {
                     child: buildFullPost(),
                   ),
                   Divider(thickness: 1.5),
-                  Flexible(
-                    child: buildComments(),
+                  Column(
+                    children: [buildComments(),],
                   )
                 ],
               ),
@@ -122,7 +122,7 @@ class _CommentsState extends State<Comments> {
                             padding: const EdgeInsets.only(right: 10.0),
                             child: Icon(
                               Icons.send,
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                         ),
@@ -145,9 +145,10 @@ class _CommentsState extends State<Comments> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: 250.0,
+          height: widget.post.mediaUrl.isNotEmpty ? 250.0 : 10.0,
           width: MediaQuery.of(context).size.width - 20.0,
-          child: cachedNetworkImage(widget.post.mediaUrl),
+          child: widget.post.mediaUrl.isNotEmpty ?
+            cachedNetworkImage(widget.post.mediaUrl) : null,
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -219,10 +220,11 @@ class _CommentsState extends State<Comments> {
               contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
               leading: CircleAvatar(
                 radius: 20.0,
-                backgroundImage: NetworkImage(comments.userDp),
+                backgroundImage: comments.userDp.isNotEmpty ?
+                  NetworkImage(comments.userDp) : null,
               ),
               title: Text(
-                comments.username,
+                comments.firstName + " " + comments.lastName,
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
               subtitle: Text(
@@ -308,7 +310,8 @@ class _CommentsState extends State<Comments> {
           .doc(widget.post.postId)
           .set({
         "type": "like",
-        "username": user.username,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
         "userId": currentUserId(),
         "userDp": user.photoUrl,
         "postId": widget.post.postId,

@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:social_media_app/models/notification.dart';
-import 'package:social_media_app/pages/profile.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/models/notification.dart';
+import 'package:enawra/pages/profile.dart';
+import 'package:enawra/widgets/indicators.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ViewActivityDetails extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ViewActivityDetailsState extends State<ViewActivityDetails> {
               ),
             ),
             title: Text(
-              widget.activity.username,
+              widget.activity.firstName + " " + widget.activity.lastName,
               style: TextStyle(fontWeight: FontWeight.w800),
             ),
             subtitle: Row(

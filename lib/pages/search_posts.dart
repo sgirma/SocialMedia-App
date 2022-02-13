@@ -12,12 +12,12 @@ import 'package:enawra/pages/profile.dart';
 import 'package:enawra/utils/firebase.dart';
 import 'package:enawra/widgets/indicators.dart';
 
-class Search extends StatefulWidget {
+class SearchPosts extends StatefulWidget {
   @override
-  _SearchState createState() => _SearchState();
+  _SearchPostsState createState() => _SearchPostsState();
 }
 
-class _SearchState extends State<Search> {
+class _SearchPostsState extends State<SearchPosts> {
   User user;
   TextEditingController searchController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -72,7 +72,7 @@ class _SearchState extends State<Search> {
       appBar: AppBar(
         title: buildSearch(),
       ),
-      body: buildUsers(),
+      // body: buildUsers(),
     );
   }
 
@@ -81,7 +81,7 @@ class _SearchState extends State<Search> {
       children: [
         Container(
           height: 35.0,
-          width: MediaQuery.of(context).size.width - 100,
+          width: MediaQuery.of(context).size.width - 50,
           decoration: BoxDecoration(
             color: Colors.black26,
             borderRadius: BorderRadius.circular(20.0),
@@ -111,7 +111,7 @@ class _SearchState extends State<Search> {
                   contentPadding: EdgeInsets.only(bottom: 10.0, left: 10.0),
                   border: InputBorder.none,
                   counterText: '',
-                  hintText: 'Search names...',
+                  hintText: 'Search posts...',
                   hintStyle: TextStyle(
                     fontSize: 15.0,
                   ),
@@ -128,7 +128,7 @@ class _SearchState extends State<Search> {
     if (!loading) {
       if (filteredUsers.isEmpty) {
         return Center(
-          child: Text("No User Found",
+          child: Text("No Posts Found",
               style: TextStyle(fontWeight: FontWeight.bold)),
         );
       } else {
@@ -151,11 +151,13 @@ class _SearchState extends State<Search> {
                   contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
                   leading: CircleAvatar(
                     radius: 35.0,
-                    backgroundImage: user.photoUrl.isNotEmpty ?
-                      NetworkImage(user?.photoUrl) : null,
+                    backgroundImage: NetworkImage(user?.photoUrl),
                   ),
-                  title: Text(user?.firstName,
+                  title: Text(user.firstName + user?.lastName,
                       style: TextStyle(fontWeight: FontWeight.bold)),
+                  // subtitle: Text(
+                  //   user?.email,
+                  // ),
                   trailing: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);

@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:social_media_app/chats/recent_chats.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/indicators.dart';
-import 'package:social_media_app/widgets/userpost.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/pages/profile.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/indicators.dart';
+import 'package:enawra/widgets/userpost.dart';
 
 class Timeline extends StatefulWidget {
   @override
@@ -41,12 +41,12 @@ class _TimelineState extends State<Timeline> {
     QuerySnapshot querySnapshot;
     if (lastDocument == null) {
       querySnapshot = await postRef
-          .orderBy('timestamp', descending: false)
+          .orderBy('timestamp', descending: true)
           .limit(documentLimit)
           .get();
     } else {
       querySnapshot = await postRef
-          .orderBy('timestamp', descending: false)
+          .orderBy('timestamp', descending: true)
           .startAfterDocument(lastDocument)
           .limit(documentLimit)
           .get();
@@ -82,22 +82,22 @@ class _TimelineState extends State<Timeline> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Wooble',
+          'enawra',
           style: TextStyle(fontWeight: FontWeight.w900),
         ),
         centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(
-              CupertinoIcons.chat_bubble_2_fill,
+              CupertinoIcons.profile_circled,
               size: 30.0,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (_) => Chats(),
+                  builder: (_) => Profile(profileId: firebaseAuth.currentUser.uid),
                 ),
               );
             },
@@ -114,7 +114,7 @@ class _TimelineState extends State<Timeline> {
                 internetChecker(context);
                 PostModel posts = PostModel.fromJson(post[index].data());
                 return Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(3.0),
                   child: UserPost(post: posts),
                 );
               },

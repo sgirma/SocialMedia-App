@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/components/text_time.dart';
-import 'package:social_media_app/models/enum/message_type.dart';
+import 'package:enawra/components/text_time.dart';
+import 'package:enawra/models/enum/message_type.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ChatBubble extends StatefulWidget {
@@ -25,7 +25,7 @@ class ChatBubble extends StatefulWidget {
 class _ChatBubbleState extends State<ChatBubble> {
   Color chatBubbleColor() {
     if (widget.isMe) {
-      return Theme.of(context).accentColor;
+      return Theme.of(context).colorScheme.secondary;
     } else {
       if (Theme.of(context).brightness == Brightness.dark) {
         return Colors.grey[800];

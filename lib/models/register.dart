@@ -1,6 +1,7 @@
 
 class Register {
-  String username;
+  String firstName;
+  String lastName;
   String email;
   String gender;
   String country;
@@ -10,7 +11,8 @@ class Register {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.username;
+    data['firstName'] = this.firstName;
+    data['lastName'] = this.lastName;
     data['email'] = this.email;
     data['gender'] = this.gender;
     data['password'] = this.password;

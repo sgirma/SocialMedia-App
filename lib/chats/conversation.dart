@@ -1,17 +1,19 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/chat_bubble.dart';
-import 'package:social_media_app/models/enum/message_type.dart';
-import 'package:social_media_app/models/message.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/view_models/conversation/conversation_view_model.dart';
-import 'package:social_media_app/view_models/user/user_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/components/chat_bubble.dart';
+import 'package:enawra/models/enum/message_type.dart';
+import 'package:enawra/models/message.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/view_models/conversation/conversation_view_model.dart';
+import 'package:enawra/view_models/user/user_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Conversation extends StatefulWidget {
@@ -28,6 +30,7 @@ class _ConversationState extends State<Conversation> {
   FocusNode focusNode = FocusNode();
   ScrollController scrollController = ScrollController();
   TextEditingController messageController = TextEditingController();
+
   bool isFirst = false;
   String chatId;
 
@@ -50,19 +53,27 @@ class _ConversationState extends State<Conversation> {
         setTyping(false);
       }
     });
+
+    // keyInitMyCtx = 0;
+    Timer(const Duration(seconds: 4), () {
+      setState(() {
+        // keyInitMyCtx = 1;
+      });
+    });
   }
 
   setTyping(typing) {
-    UserViewModel viewModel = Provider.of<UserViewModel>(context);
+    UserViewModel viewModel =
+        Provider.of<UserViewModel>(context, listen: false);
     viewModel.setUser();
-    var user = Provider.of<UserViewModel>(context, listen: true).user;
+    var user = Provider.of<UserViewModel>(context, listen: false).user;
     Provider.of<ConversationViewModel>(context, listen: false)
         .setUserTyping(widget.chatId, user, typing);
   }
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel viewModel = Provider.of<UserViewModel>(context);
+    UserViewModel viewModel = Provider.of<UserViewModel>(context, listen: false);
     viewModel.setUser();
     var user = Provider.of<UserViewModel>(context, listen: true).user;
     return Consumer<ConversationViewModel>(
@@ -80,7 +91,7 @@ class _ConversationState extends State<Conversation> {
           ),
           elevation: 0.0,
           titleSpacing: 0,
-          title: buildUserName(),
+          title: buildName(),
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -92,8 +103,10 @@ class _ConversationState extends State<Conversation> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List messages = snapshot.data.docs;
-                      viewModel.setReadCount(
-                          widget.chatId, user, messages.length);
+                      if (messages.isNotEmpty) {
+                        viewModel.setReadCount(
+                            widget.chatId, user, messages.length);
+                      }
                       return ListView.builder(
                         controller: scrollController,
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -127,7 +140,7 @@ class _ConversationState extends State<Conversation> {
                         IconButton(
                           icon: Icon(
                             CupertinoIcons.photo_on_rectangle,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           onPressed: () => showPhotoOptions(viewModel, user),
                         ),
@@ -156,10 +169,10 @@ class _ConversationState extends State<Conversation> {
                         IconButton(
                           icon: Icon(
                             Feather.send,
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           onPressed: () {
-                            if (messageController.text.isNotEmpty) {
+                            if (messageController.text.trim().isNotEmpty) {
                               sendMessage(viewModel, user);
                             }
                           },
@@ -191,7 +204,7 @@ class _ConversationState extends State<Conversation> {
     }
   }
 
-  buildUserName() {
+  buildName() {
     return StreamBuilder(
       stream: usersRef.doc('${widget.userId}').snapshots(),
       builder: (context, snapshot) {
@@ -207,9 +220,9 @@ class _ConversationState extends State<Conversation> {
                     tag: user.email,
                     child: CircleAvatar(
                       radius: 25.0,
-                      backgroundImage: CachedNetworkImageProvider(
-                        '${user.photoUrl}',
-                      ),
+                      backgroundImage: user.photoUrl.isNotEmpty
+                          ? CachedNetworkImageProvider('${user.photoUrl}')
+                          : null,
                     ),
                   ),
                 ),
@@ -219,7 +232,7 @@ class _ConversationState extends State<Conversation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        '${user.username}',
+                        '${user.firstName}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0,

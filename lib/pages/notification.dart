@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/components/notification_stream_wrapper.dart';
-import 'package:social_media_app/models/notification.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/notification_items.dart';
+import 'package:enawra/components/notification_stream_wrapper.dart';
+import 'package:enawra/models/notification.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/notification_items.dart';
 
 class Activities extends StatefulWidget {
   @override
@@ -32,7 +32,7 @@ class _ActivitiesState extends State<Activities> {
                 style: TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.w900,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),

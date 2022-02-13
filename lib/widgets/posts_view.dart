@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-//import 'package:like_button/like_button.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/pages/profile.dart';
-import 'package:social_media_app/screens/comment.dart';
-import 'package:social_media_app/screens/view_image.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/widgets/cached_image.dart';
+import 'package:enawra/models/post.dart';
+import 'package:enawra/models/user.dart';
+import 'package:enawra/pages/profile.dart';
+import 'package:enawra/screens/comment.dart';
+import 'package:enawra/screens/view_image.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/widgets/cached_image.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Posts extends StatefulWidget {
@@ -28,8 +27,6 @@ class _PostsState extends State<Posts> {
   currentUserId() {
     return firebaseAuth.currentUser.uid;
   }
-
-  //UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -158,27 +155,26 @@ class _PostsState extends State<Posts> {
   Widget buildPostHeader() {
     bool isMe = currentUserId() == widget.post.ownerId;
     return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-        leading: buildUserDp(),
-        title: Text(
-    widget.post.username,
-    style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-    widget.post.location == null ? 'Wooble' : widget.post.location,
-        ),
-        trailing: isMe
-      ? IconButton(
-          icon: Icon(Feather.more_horizontal),
-          onPressed: () => handleDelete(context),
-        )
-      : IconButton(
-          ///Feature coming soon
-          icon: Icon(CupertinoIcons.bookmark, size: 25.0),
-          onPressed: () {},
-        ),
-      );
-
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
+      leading: buildUserDp(),
+      title: Text(
+        widget.post.firstName,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Text(
+        widget.post.location == null ? 'enawra' : widget.post.location,
+      ),
+      trailing: isMe
+          ? IconButton(
+              icon: Icon(Feather.more_horizontal),
+              onPressed: () => handleDelete(context),
+            )
+          : IconButton(
+              ///Feature coming soon
+              icon: Icon(CupertinoIcons.bookmark, size: 25.0),
+              onPressed: () {},
+            ),
+    );
   }
 
   buildUserDp() {
@@ -250,7 +246,8 @@ class _PostsState extends State<Posts> {
           .doc(widget.post.postId)
           .set({
         "type": "like",
-        "username": user.username,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
         "userId": currentUserId(),
         "userDp": user.photoUrl,
         "postId": widget.post.postId,

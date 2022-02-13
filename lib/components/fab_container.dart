@@ -29,10 +29,15 @@ class FabContainer extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(
             icon,
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
           onPressed: () {
-            chooseUpload(context);
+            // Navigator.pop(context);
+            Navigator.of(context).push(
+              CupertinoPageRoute(
+                builder: (_) => CreatePost(),
+              ),
+            );
           },
           mini: mini,
         );
@@ -61,7 +66,7 @@ class FabContainer extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).accentColor),
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
                 ),
               ),

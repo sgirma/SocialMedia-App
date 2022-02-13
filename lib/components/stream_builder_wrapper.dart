@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 typedef ItemBuilder<T> = Widget Function(
   BuildContext context,
@@ -55,7 +55,6 @@ class StreamBuilderWrapper extends StatelessWidget {
                     return itemBuilder(context, list[index]);
                   },
                 );
-
         } else {
           return circularProgress(context);
         }

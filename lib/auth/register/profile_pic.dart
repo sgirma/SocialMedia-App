@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/custom_image.dart';
-import 'package:social_media_app/view_models/auth/posts_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/components/custom_image.dart';
+import 'package:enawra/view_models/auth/posts_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 class ProfilePicture extends StatefulWidget {
   @override
@@ -43,7 +43,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                       Radius.circular(3.0),
                     ),
                     border: Border.all(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   child: viewModel.imgLink != null
@@ -58,7 +58,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                               child: Text(
                                 'upload your profile picture',
                                 style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                             )
@@ -75,7 +75,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).accentColor),
+                        Theme.of(context).colorScheme.secondary),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),

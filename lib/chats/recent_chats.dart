@@ -1,27 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/components/chat_item.dart';
-import 'package:social_media_app/models/message.dart';
-import 'package:social_media_app/utils/firebase.dart';
-import 'package:social_media_app/view_models/user/user_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/components/chat_item.dart';
+import 'package:enawra/models/message.dart';
+import 'package:enawra/utils/firebase.dart';
+import 'package:enawra/view_models/user/user_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
+import 'package:enawra/pages/search.dart';
 
 class Chats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserViewModel viewModel =
-        Provider.of<UserViewModel>(context, listen: false);
+        UserViewModel();
     viewModel.setUser();
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          onTap: (){
-            Navigator.pop(context);
+        title: Text("Chats"),actions: [
+        IconButton(
+          icon: Icon(
+            CupertinoIcons.search,
+            size: 30.0,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (_) => Search(),
+              ),
+            );
           },
-          child: Icon(Icons.keyboard_backspace),
         ),
-        title: Text("Chats"),
+        SizedBox(width: 20.0),
+      ],
       ),
       body: StreamBuilder(
         stream: userChatsStream('${viewModel.user?.uid ?? ""}'),

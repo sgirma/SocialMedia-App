@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/auth/register/register.dart';
-import 'package:social_media_app/components/password_text_field.dart';
-import 'package:social_media_app/components/text_form_builder.dart';
-import 'package:social_media_app/utils/validation.dart';
-import 'package:social_media_app/view_models/auth/login_view_model.dart';
-import 'package:social_media_app/widgets/indicators.dart';
+import 'package:enawra/auth/register/register.dart';
+import 'package:enawra/components/password_text_field.dart';
+import 'package:enawra/components/text_form_builder.dart';
+import 'package:enawra/utils/validation.dart';
+import 'package:enawra/view_models/auth/login_view_model.dart';
+import 'package:enawra/widgets/indicators.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -53,7 +53,7 @@ class _LoginState extends State<Login> {
                 style: TextStyle(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w300,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Don\'t have an account?'),
+                Text("Don't have an account? "),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context)
@@ -73,7 +73,7 @@ class _LoginState extends State<Login> {
                     'Sign up',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -152,7 +152,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).accentColor,
+                  Theme.of(context).colorScheme.secondary,
                 ),
               ),
               // highlightElevation: 4.0,
