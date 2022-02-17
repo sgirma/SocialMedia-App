@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enawra/screens/view_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -64,7 +65,7 @@ class _ConversationState extends State<Conversation> {
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel viewModel = Provider.of<UserViewModel>(context, listen: false);
+    UserViewModel viewModel = UserViewModel(); // Provider.of<UserViewModel>(context, listen: false);
     viewModel.setUser();
     var user = Provider.of<UserViewModel>(context, listen: true).user;
     return Consumer<ConversationViewModel>(
@@ -320,8 +321,9 @@ class _ConversationState extends State<Conversation> {
     if (msg.isNotEmpty) {
       if (isFirst) {
         print("FIRST");
-        String id = await viewModel.sendFirstMessage(widget.userId, message);
+        String id = await context.read<ConversationViewModel>().sendFirstMessage(widget.userId, message);
         setState(() {
+          print("set state");
           isFirst = false;
           chatId = id;
         });

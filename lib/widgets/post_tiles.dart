@@ -2,7 +2,6 @@ import 'package:enawra/screens/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:enawra/models/post.dart';
-import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/widgets/cached_image.dart';
 
 class PostTile extends StatefulWidget {

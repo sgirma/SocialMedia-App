@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:enawra/auth/register/register.dart';
 import 'package:enawra/components/stream_builder_wrapper.dart';
-import 'package:enawra/components/stream_grid_wrapper.dart';
 import 'package:enawra/models/post.dart';
 import 'package:enawra/models/user.dart';
 import 'package:enawra/screens/edit_profile.dart';
 import 'package:enawra/screens/settings.dart';
 import 'package:enawra/utils/firebase.dart';
-import 'package:enawra/widgets/post_tiles.dart';
 import 'package:enawra/widgets/posts_view.dart';
 
 class Profile extends StatefulWidget {

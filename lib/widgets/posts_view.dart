@@ -308,11 +308,11 @@ class _PostsState extends State<Posts> {
         });
   }
 
-//you can only delete your own posts
+  //you can only delete your own posts
   deletePost() async {
     postRef.doc(widget.post.id).delete();
 
-//delete notification associated with that given post
+    //delete notification associated with that given post
     QuerySnapshot notificationsSnap = await notificationRef
         .doc(widget.post.ownerId)
         .collection('notifications')
@@ -324,7 +324,7 @@ class _PostsState extends State<Posts> {
       }
     });
 
-//delete all the comments associated with that given post
+    //delete all the comments associated with that given post
     QuerySnapshot commentSnapshot =
         await commentRef.doc(widget.post.postId).collection('comments').get();
     commentSnapshot.docs.forEach((doc) {
