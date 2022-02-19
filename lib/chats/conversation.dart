@@ -39,10 +39,11 @@ class _ConversationState extends State<Conversation> {
     scrollController.addListener(() {
       focusNode.unfocus();
     });
-    if (widget.chatId == 'newChat') {
+    if (widget.chatId == null) {
       isFirst = true;
+    } else {
+      chatId = widget.chatId;
     }
-    chatId = widget.chatId;
 
     messageController.addListener(() {
       if (focusNode.hasFocus && messageController.text.isNotEmpty) {
@@ -60,16 +61,22 @@ class _ConversationState extends State<Conversation> {
     viewModel.setUser();
     var user = Provider.of<UserViewModel>(context, listen: false).user;
     Provider.of<ConversationViewModel>(context, listen: false)
-        .setUserTyping(widget.chatId, user, typing);
+        .setUserTyping(chatId, user, typing);
   }
 
   @override
   Widget build(BuildContext context) {
-    UserViewModel viewModel = UserViewModel(); // Provider.of<UserViewModel>(context, listen: false);
+    UserViewModel viewModel =
+        UserViewModel(); // Provider.of<UserViewModel>(context, listen: false);
     viewModel.setUser();
+
     var user = Provider.of<UserViewModel>(context, listen: true).user;
     return Consumer<ConversationViewModel>(
         builder: (BuildContext context, viewModel, Widget child) {
+      if (isFirst) {
+        setUpFirstChat(viewModel);
+      }
+
       return Scaffold(
         key: viewModel.scaffoldKey,
         appBar: AppBar(
@@ -91,13 +98,12 @@ class _ConversationState extends State<Conversation> {
             children: [
               Flexible(
                 child: StreamBuilder(
-                  stream: messageListStream(widget.chatId),
+                  stream: messageListStream(chatId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List messages = snapshot.data.docs;
                       if (messages.isNotEmpty) {
-                        viewModel.setReadCount(
-                            widget.chatId, user, messages.length);
+                        viewModel.setReadCount(chatId, user, messages.length);
                       }
                       return ListView.builder(
                         controller: scrollController,
@@ -232,7 +238,7 @@ class _ConversationState extends State<Conversation> {
                       ),
                       SizedBox(height: 5.0),
                       StreamBuilder(
-                        stream: chatRef.doc('${widget.chatId}').snapshots(),
+                        stream: chatRef.doc('$chatId').snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             DocumentSnapshot snap = snapshot.data;
@@ -297,6 +303,17 @@ class _ConversationState extends State<Conversation> {
     );
   }
 
+  setUpFirstChat(ConversationViewModel viewModel) async {
+    if (isFirst) {
+      print("Sending the first message");
+      String id = await viewModel.sendFirstMessage(widget.userId);
+      setState(() {
+        isFirst = false;
+        chatId = id;
+      });
+    }
+  }
+
   sendMessage(ConversationViewModel viewModel, var user,
       {bool isImage = false, int imageType}) async {
     String msg;
@@ -304,7 +321,7 @@ class _ConversationState extends State<Conversation> {
       msg = await viewModel.pickImage(
         source: imageType,
         context: context,
-        chatId: widget.chatId,
+        chatId: chatId,
       );
     } else {
       msg = messageController.text.trim();
@@ -319,20 +336,10 @@ class _ConversationState extends State<Conversation> {
     );
 
     if (msg.isNotEmpty) {
-      if (isFirst) {
-        print("FIRST");
-        String id = await context.read<ConversationViewModel>().sendFirstMessage(widget.userId, message);
-        setState(() {
-          print("set state");
-          isFirst = false;
-          chatId = id;
-        });
-      } else {
-        viewModel.sendMessage(
-          widget.chatId,
-          message,
-        );
-      }
+      viewModel.sendMessage(
+        chatId,
+        message,
+      );
     }
   }
 

@@ -16,21 +16,12 @@ class ChatService {
     await chatRef.doc("$chatId").update({"lastTextTime": Timestamp.now()});
   }
 
-  Future<String> sendFirstMessage1(String recipient) async {
+  Future<String> sendFirstMessage(String recipient) async {
     User user = firebaseAuth.currentUser;
     DocumentReference ref = await chatRef.add({
       'users': [recipient, user.uid],
     });
-    await sendMessage(new Message(), ref.id);
-    return ref.id;
-  }
 
-  Future<String> sendFirstMessage(Message message, String recipient) async {
-    User user = firebaseAuth.currentUser;
-    DocumentReference ref = await chatRef.add({
-      'users': [recipient, user.uid],
-    });
-    await sendMessage(message, ref.id);
     return ref.id;
   }
 

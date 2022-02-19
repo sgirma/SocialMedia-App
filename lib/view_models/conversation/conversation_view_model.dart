@@ -21,9 +21,8 @@ class ConversationViewModel extends ChangeNotifier {
     );
   }
 
-  Future<String> sendFirstMessage(String recipient, Message message) async {
+  Future<String> sendFirstMessage(String recipient) async {
     String newChatId = await chatService.sendFirstMessage(
-      message,
       recipient,
     );
 

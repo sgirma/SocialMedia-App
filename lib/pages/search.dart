@@ -164,7 +164,7 @@ class _SearchState extends State<Search> {
                         CupertinoPageRoute(
                           builder: (_) => Conversation(
                             userId: doc.id,
-                            chatId: 'newChat',
+                            chatId: null,
                           ),
                         ),
                       );
