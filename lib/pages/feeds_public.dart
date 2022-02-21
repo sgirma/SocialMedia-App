@@ -23,7 +23,7 @@ class _TimelinePublicState extends State<TimelinePublic> {
 
   bool hasMore = true;
 
-  int documentLimit = 10;
+  int documentLimit = 50;
 
   DocumentSnapshot lastDocument;
 
@@ -83,28 +83,10 @@ class _TimelinePublicState extends State<TimelinePublic> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'enawra',
+          'discover',
           style: TextStyle(fontWeight: FontWeight.w900),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(
-              CupertinoIcons.profile_circled,
-              size: 30.0,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (_) => Profile(profileId: firebaseAuth.currentUser.uid),
-                ),
-              );
-            },
-          ),
-          SizedBox(width: 20.0),
-        ],
       ),
       body: isLoading
           ? circularProgress(context)

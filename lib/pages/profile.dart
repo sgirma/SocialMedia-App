@@ -21,7 +21,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile>  {
+class _ProfileState extends State<Profile> {
   User user;
   bool isLoading = false;
   int postCount = 0;
@@ -44,13 +44,14 @@ class _ProfileState extends State<Profile>  {
   }
 
   checkIfFollowing() async {
-    DocumentSnapshot doc = await followersRef
+    var doc = await followersRef
         .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
         .get();
+
+    List<dynamic> following = doc['following'];
+
     setState(() {
-      isFollowing = doc.exists;
+      isFollowing = following.contains(currentUserId());
     });
   }
 
@@ -106,7 +107,9 @@ class _ProfileState extends State<Profile>  {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(user?.photoUrl),
+                                backgroundImage: user.photoUrl.isNotEmpty
+                                    ? NetworkImage(user?.photoUrl)
+                                    : null,
                                 radius: 40.0,
                               ),
                             ),
@@ -163,7 +166,8 @@ class _ProfileState extends State<Profile>  {
                                               children: [
                                                 Icon(Feather.settings,
                                                     color: Theme.of(context)
-                                                        .colorScheme.secondary),
+                                                        .colorScheme
+                                                        .secondary),
                                                 Text(
                                                   'settings',
                                                   style:
@@ -232,16 +236,20 @@ class _ProfileState extends State<Profile>  {
                                 ),
                                 StreamBuilder(
                                   stream: followersRef
-                                      .doc(widget.profileId)
-                                      .collection('userFollowers')
                                       .snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasData) {
-                                      QuerySnapshot snap = snapshot.data;
-                                      List<DocumentSnapshot> docs = snap.docs;
+                                      var snap = snapshot.data;
+
+                                      int i;
+                                      snap.docs.forEach((element) => {
+                                        if(widget.profileId == element.id) {
+                                          i = (element.data() as Map)['followers'].length
+                                        }
+                                      });
                                       return buildCount(
-                                          "FOLLOWERS", docs?.length ?? 0);
+                                          "FOLLOWERS", i ?? 0);
                                     } else {
                                       return buildCount("FOLLOWERS", 0);
                                     }
@@ -257,16 +265,20 @@ class _ProfileState extends State<Profile>  {
                                 ),
                                 StreamBuilder(
                                   stream: followingRef
-                                      .doc(widget.profileId)
-                                      .collection('userFollowing')
                                       .snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasData) {
                                       QuerySnapshot snap = snapshot.data;
-                                      List<DocumentSnapshot> docs = snap.docs;
+
+                                      int i;
+                                      snap.docs?.forEach((element) => {
+                                        if(widget.profileId == element.id) {
+                                          i = (element.data() as Map)['following']?.length
+                                        }
+                                      });
                                       return buildCount(
-                                          "FOLLOWING", docs?.length ?? 0);
+                                          "FOLLOWING", i ?? 0);
                                     } else {
                                       return buildCount("FOLLOWING", 0);
                                     }
@@ -292,7 +304,8 @@ class _ProfileState extends State<Profile>  {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0),
                       child: Row(
                         children: [
                           Text(
@@ -423,26 +436,13 @@ class _ProfileState extends State<Profile>  {
       isFollowing = false;
     });
     //remove follower
-    followersRef
-        .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
+    followersRef.doc(widget.profileId).update({
+      'followers': FieldValue.arrayRemove([currentUserId()]),
     });
+
     //remove following
-    followingRef
-        .doc(currentUserId())
-        .collection('userFollowing')
-        .doc(widget.profileId)
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        doc.reference.delete();
-      }
+    followingRef.doc(currentUserId()).update({
+      'following': FieldValue.arrayRemove([widget.profileId])
     });
     //remove from notifications feeds
     notificationRef
@@ -463,18 +463,29 @@ class _ProfileState extends State<Profile>  {
     setState(() {
       isFollowing = true;
     });
+
     //updates the followers collection of the followed user
-    followersRef
-        .doc(widget.profileId)
-        .collection('userFollowers')
-        .doc(currentUserId())
-        .set({});
+    var j = await followersRef.doc(widget.profileId).get();
+
+    j.data() != null
+        ? followersRef.doc(widget.profileId).update({
+            'followers': FieldValue.arrayUnion([currentUserId()]),
+          })
+        : followersRef.doc(widget.profileId).set({
+            'followers': FieldValue.arrayUnion([currentUserId()])
+          });
+
+    var i = await followingRef.doc(currentUserId()).get();
+
     //updates the following collection of the currentUser
-    followingRef
-        .doc(currentUserId())
-        .collection('userFollowing')
-        .doc(widget.profileId)
-        .set({});
+    i.data() != null
+        ? followingRef.doc(currentUserId()).update({
+            'following': FieldValue.arrayUnion([widget.profileId])
+          })
+        : followingRef.doc(currentUserId()).set({
+            'following': FieldValue.arrayUnion([widget.profileId])
+          });
+
     //update the notification feeds
     notificationRef
         .doc(widget.profileId)
@@ -541,15 +552,6 @@ class _ProfileState extends State<Profile>  {
                   blurRadius: 5.0,
                 )
               ], color: Colors.white, shape: BoxShape.circle),
-              child: Padding(
-                padding: EdgeInsets.all(3.0),
-                child: Icon(
-                  docs.isEmpty
-                      ? CupertinoIcons.heart
-                      : CupertinoIcons.heart_fill,
-                  color: Colors.red,
-                ),
-              ),
             ),
           );
         }

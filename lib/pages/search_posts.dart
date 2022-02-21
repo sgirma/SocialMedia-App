@@ -72,11 +72,7 @@ class _SearchPostsState extends State<SearchPosts> {
       appBar: AppBar(
         title: buildSearch(),
       ),
-      body: StreamBuilder(
-        builder: (context, snapshot) {
-          return Center(child: Text('Under construction'));
-        },
-      ),
+      body: buildUsers(),
     );
   }
 
@@ -85,7 +81,7 @@ class _SearchPostsState extends State<SearchPosts> {
       children: [
         Container(
           height: 35.0,
-          width: MediaQuery.of(context).size.width - 50,
+          width: MediaQuery.of(context).size.width - 100,
           decoration: BoxDecoration(
             color: Colors.black26,
             borderRadius: BorderRadius.circular(20.0),
@@ -115,7 +111,7 @@ class _SearchPostsState extends State<SearchPosts> {
                   contentPadding: EdgeInsets.only(bottom: 10.0, left: 10.0),
                   border: InputBorder.none,
                   counterText: '',
-                  hintText: 'Search posts...',
+                  hintText: 'Search names...',
                   hintStyle: TextStyle(
                     fontSize: 15.0,
                   ),
@@ -125,6 +121,96 @@ class _SearchPostsState extends State<SearchPosts> {
           ),
         ),
       ],
+    );
+  }
+
+  buildUsers() {
+    if (!loading) {
+      if (filteredUsers.isEmpty) {
+        return Center(
+          child: Text("No User Found",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: filteredUsers.length,
+          itemBuilder: (BuildContext context, int index) {
+            DocumentSnapshot doc = filteredUsers[index];
+            UserModel user = UserModel.fromJson(doc.data());
+            if (doc.id == currentUserId()) {
+              Timer(Duration(milliseconds: 500), () {
+                setState(() {
+                  removeFromList(index);
+                });
+              });
+            }
+            return Column(
+              children: [
+                ListTile(
+                  onTap: () => showProfile(context, profileId: user?.id),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 25.0),
+                  leading: CircleAvatar(
+                    radius: 35.0,
+                    backgroundImage: user.photoUrl.isNotEmpty ?
+                    NetworkImage(user?.photoUrl) : null,
+                  ),
+                  title: Text(user?.firstName,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => Conversation(
+                            userId: doc.id,
+                            chatId: null,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 30.0,
+                      width: 62.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(3.0),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            'Message',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Divider(),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: circularProgress(context),
+      );
+    }
+  }
+
+  showProfile(BuildContext context, {String profileId}) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (_) => Profile(profileId: profileId),
+      ),
     );
   }
 }

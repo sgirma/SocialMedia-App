@@ -217,7 +217,7 @@ class _CommentsState extends State<Comments> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+              contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
               leading: CircleAvatar(
                 radius: 20.0,
                 backgroundImage: comments.userDp.isNotEmpty ?
@@ -233,7 +233,7 @@ class _CommentsState extends State<Comments> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
               child: Text(
                 comments.comment,
                 style: TextStyle(fontWeight: FontWeight.w400),

@@ -64,6 +64,21 @@ class UserPost extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        post.mediaUrl.isEmpty ? Visibility(
+                          visible: post.description != null &&
+                              post.description.toString().isNotEmpty,
+                          child: Padding(
+                            padding: currentUserId() != post.ownerId ? const EdgeInsets.only(left: 5.0, top: 40.0) : const EdgeInsets.only(left: 5.0, top: 5.0) ,
+                            child: Text(
+                              '${post?.description ?? ""}',
+                              style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: 15.0,
+                              ),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ) : Container(),
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0),
                           child: Row(
@@ -129,7 +144,7 @@ class UserPost extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Visibility(
+                        post.mediaUrl.isNotEmpty ? Visibility(
                           visible: post.description != null &&
                               post.description.toString().isNotEmpty,
                           child: Padding(
@@ -144,10 +159,10 @@ class UserPost extends StatelessWidget {
                               maxLines: 2,
                             ),
                           ),
-                        ),
+                        ) : Container(),
                         SizedBox(height: 3.0),
                         Padding(
-                          padding: const EdgeInsets.all(3.0),
+                          padding: const EdgeInsets.only(left: 10.0, top: 3.0, bottom: 3.0),
                           child: Text(timeago.format(post.timestamp.toDate()),
                               style: TextStyle(fontSize: 10.0)),
                         ),

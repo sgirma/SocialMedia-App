@@ -42,6 +42,7 @@ class PostService extends Service {
       "description": description ?? "",
       "location": location ?? "enawra",
       "timestamp": Timestamp.now(),
+      "state": usersRef.doc(firebaseAuth.currentUser.uid)
     }).catchError((e) {
       print(e);
     });

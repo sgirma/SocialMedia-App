@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:enawra/screens/view_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:enawra/models/post.dart';
@@ -22,7 +23,7 @@ class _TimelineState extends State<Timeline> {
 
   bool hasMore = true;
 
-  int documentLimit = 10;
+  int documentLimit = 50;
 
   DocumentSnapshot lastDocument;
 
@@ -39,13 +40,24 @@ class _TimelineState extends State<Timeline> {
       isLoading = true;
     });
     QuerySnapshot querySnapshot;
+
+    List<dynamic> f;
+
+    await followingRef.doc(firebaseAuth.currentUser.uid).get()
+    .then((value) => {
+      f = value["following"],
+      f.add(currentUserId())
+    });
+
     if (lastDocument == null) {
       querySnapshot = await postRef
+        .where("ownerId", whereIn: f)
           .orderBy('timestamp', descending: true)
           .limit(documentLimit)
           .get();
     } else {
       querySnapshot = await postRef
+          .where("ownerId", whereIn: f)
           .orderBy('timestamp', descending: true)
           .startAfterDocument(lastDocument)
           .limit(documentLimit)
@@ -54,8 +66,11 @@ class _TimelineState extends State<Timeline> {
     if (querySnapshot.docs.length < documentLimit) {
       hasMore = false;
     }
-    lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
-    post.addAll(querySnapshot.docs);
+
+    if(querySnapshot.docs.isNotEmpty) {
+      lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
+      post.addAll(querySnapshot.docs);
+    }
     setState(() {
       isLoading = false;
     });

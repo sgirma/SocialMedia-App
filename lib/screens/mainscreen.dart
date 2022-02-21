@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:enawra/pages/feeds_public.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -38,7 +39,7 @@ class _TabScreenState extends State<TabScreen> {
     {
       'title': 'Search',
       'icon': Feather.search,
-      'page': SearchPosts(),
+      'page': TimelinePublic(),
       'index': 3,
     },
     {

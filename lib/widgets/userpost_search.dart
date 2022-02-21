@@ -64,6 +64,21 @@ class UserPostSearch extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        post.mediaUrl.isEmpty ? Visibility(
+                          visible: post.description != null &&
+                              post.description.toString().isNotEmpty,
+                          child: Padding(
+                            padding: currentUserId() != post.ownerId ? const EdgeInsets.only(left: 5.0, top: 40.0) : const EdgeInsets.only(left: 5.0, top: 5.0) ,
+                            child: Text(
+                              '${post?.description ?? ""}',
+                              style: TextStyle(
+                                color: Color(0xff4D4D4D),
+                                fontSize: 15.0,
+                              ),
+                              maxLines: 2,
+                            ),
+                          ),
+                        ) : Container(),
                         Padding(
                           padding: const EdgeInsets.only(left: 0.0),
                           child: Row(
@@ -129,7 +144,7 @@ class UserPostSearch extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Visibility(
+                        post.mediaUrl.isNotEmpty ? Visibility(
                           visible: post.description != null &&
                               post.description.toString().isNotEmpty,
                           child: Padding(
@@ -138,16 +153,16 @@ class UserPostSearch extends StatelessWidget {
                               '${post?.description ?? ""}',
                               style: TextStyle(
                                 color:
-                                    Theme.of(context).textTheme.caption.color,
+                                Theme.of(context).textTheme.caption.color,
                                 fontSize: 15.0,
                               ),
                               maxLines: 2,
                             ),
                           ),
-                        ),
+                        ) : Container(),
                         SizedBox(height: 3.0),
                         Padding(
-                          padding: const EdgeInsets.all(3.0),
+                          padding: const EdgeInsets.only(left: 10.0, top: 3.0, bottom: 3.0),
                           child: Text(timeago.format(post.timestamp.toDate()),
                               style: TextStyle(fontSize: 10.0)),
                         ),
@@ -190,12 +205,12 @@ class UserPostSearch extends StatelessWidget {
             },
             icon: docs.isEmpty
                 ? Icon(
-                    CupertinoIcons.heart,
-                  )
+              CupertinoIcons.heart,
+            )
                 : Icon(
-                    CupertinoIcons.heart_fill,
-                    color: Colors.red,
-                  ),
+              CupertinoIcons.heart_fill,
+              color: Colors.red,
+            ),
           );
         }
         return Container();
@@ -252,8 +267,8 @@ class UserPostSearch extends StatelessWidget {
               child: Container(
                 height: 40.0,
                 decoration: BoxDecoration(
-                  color: Colors.white60,
-                  borderRadius: BorderRadius.zero
+                    color: Colors.white60,
+                    borderRadius: BorderRadius.zero
                 ),
                 child: GestureDetector(
                   onTap: () => showProfile(context, profileId: user?.id),
@@ -264,15 +279,15 @@ class UserPostSearch extends StatelessWidget {
                       children: [
                         user.photoUrl.isNotEmpty
                             ? CircleAvatar(
-                                radius: 14.0,
-                                backgroundColor: Color(0xff4D4D4D),
-                                backgroundImage: CachedNetworkImageProvider(
-                                    user?.photoUrl ?? ""),
-                              )
+                          radius: 14.0,
+                          backgroundColor: Color(0xff4D4D4D),
+                          backgroundImage: CachedNetworkImageProvider(
+                              user?.photoUrl ?? ""),
+                        )
                             : CircleAvatar(
-                                radius: 14.0,
-                                backgroundColor: Color(0xff4D4D4D),
-                              ),
+                          radius: 14.0,
+                          backgroundColor: Color(0xff4D4D4D),
+                        ),
                         SizedBox(width: 5.0),
                         Column(
                           mainAxisSize: MainAxisSize.min,
