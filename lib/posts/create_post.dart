@@ -18,10 +18,6 @@ class CreatePost extends StatefulWidget {
 class _CreatePostState extends State<CreatePost> {
   @override
   Widget build(BuildContext context) {
-    currentUserId() {
-      return firebaseAuth.currentUser.uid;
-    }
-
     PostsViewModel viewModel = Provider.of<PostsViewModel>(context);
     return WillPopScope(
       onWillPop: () async {

@@ -6,10 +6,15 @@ import 'package:enawra/models/user.dart';
 import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/services/services.dart';
 import 'package:enawra/utils/firebase.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 
 class PostService extends Service {
   String postId = Uuid().v4();
+  String location;
+  Position position;
+  Placemark placemark;
 
 //uploads profile picture to the users collection
   uploadProfilePicture(File image, User user) async {
@@ -21,8 +26,10 @@ class PostService extends Service {
   }
 
 //uploads post to the post collection
-  uploadPost(File image, String location, String description) async {
+  uploadPost(File image, String description) async {
     String link = "";
+
+    String loc = await getLocation();
 
     if (image != null) {
       link = await uploadImage(posts, image);
@@ -40,12 +47,31 @@ class PostService extends Service {
       "ownerId": firebaseAuth.currentUser.uid,
       "mediaUrl": link,
       "description": description ?? "",
-      "location": location ?? "enawra",
+      "location": loc ?? "enawra",
       "timestamp": Timestamp.now(),
       "state": usersRef.doc(firebaseAuth.currentUser.uid)
     }).catchError((e) {
       print(e);
     });
+  }
+
+  Future<String> getLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    print(permission);
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      LocationPermission rPermission = await Geolocator.requestPermission();
+      print(rPermission);
+      await getLocation();
+    } else {
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+      placemark = placemarks[0];
+      location = " ${placemarks[0].locality}, ${placemarks[0].country}";
+    }
+
+    return location;
   }
 
   //uploads story to the story collection

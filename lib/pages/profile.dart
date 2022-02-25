@@ -48,6 +48,8 @@ class _ProfileState extends State<Profile> {
         .doc(widget.profileId)
         .get();
 
+    // if(doc.)
+
     List<dynamic> following = doc['following'];
 
     setState(() {

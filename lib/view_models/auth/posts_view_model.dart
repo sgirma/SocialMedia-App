@@ -134,35 +134,11 @@ class PostsViewModel extends ChangeNotifier {
     }
   }
 
-  getLocation() async {
-    loading = true;
-    notifyListeners();
-    LocationPermission permission = await Geolocator.checkPermission();
-    print(permission);
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      LocationPermission rPermission = await Geolocator.requestPermission();
-      print(rPermission);
-      await getLocation();
-    } else {
-      position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      placemark = placemarks[0];
-      location = " ${placemarks[0].locality}, ${placemarks[0].country}";
-      locationTEC.text = location;
-      print(location);
-    }
-    loading = false;
-    notifyListeners();
-  }
-
   uploadPosts(BuildContext context) async {
     try {
       loading = true;
       notifyListeners();
-      await postService.uploadPost(mediaUrl, location, description);
+      await postService.uploadPost(mediaUrl, description);
       loading = false;
       resetPost();
       notifyListeners();
@@ -205,8 +181,13 @@ class PostsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-void showInSnackBar(String value,context) {
+  void showInSnackBar(String value,context) {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value)));
+  }
+
+  setEmail(val) {
+    email = val;
+    notifyListeners();
   }
 }

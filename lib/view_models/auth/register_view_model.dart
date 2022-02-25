@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:enawra/auth/register/profile_pic.dart';
 import 'package:enawra/services/auth_service.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -16,6 +19,7 @@ class RegisterViewModel extends ChangeNotifier {
   FocusNode countryFN = FocusNode();
   FocusNode passFN = FocusNode();
   FocusNode cPassFN = FocusNode();
+
   AuthService auth = AuthService();
 
   register(BuildContext context) async {
@@ -33,14 +37,12 @@ class RegisterViewModel extends ChangeNotifier {
         try {
           auth.createUser(firstName: firstName, lastName: lastName,
             email: email, password: password, country: country);
-          // print(success);
-          // if (success) {
-            Navigator.of(scaffoldKey.currentContext).pushReplacement(
-              CupertinoPageRoute(
-                builder: (_) => ProfilePicture(),
-              ),
-            );
-          // }
+
+          Navigator.pushReplacement(context,
+            CupertinoPageRoute(
+              builder: (_) => ProfilePicture(),
+            ),
+          );
         } catch (e) {
           loading = false;
           notifyListeners();

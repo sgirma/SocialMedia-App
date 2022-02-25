@@ -12,6 +12,8 @@ import 'package:enawra/screens/comment.dart';
 import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/services/post_service.dart';
 import 'package:enawra/utils/firebase.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class UserPostSearch extends StatelessWidget {

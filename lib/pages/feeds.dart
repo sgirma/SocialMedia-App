@@ -45,17 +45,21 @@ class _TimelineState extends State<Timeline> {
 
     await followingRef.doc(firebaseAuth.currentUser.uid).get()
     .then((value) => {
-      f = value["following"],
-      f.add(currentUserId())
+      if(value.exists) {
+        f = value['following'],
+        f.add(currentUserId())
+      }
     });
 
-    if (lastDocument == null) {
+    print("heloollolllo");
+
+    if (lastDocument == null && f != null) {
       querySnapshot = await postRef
         .where("ownerId", whereIn: f)
           .orderBy('timestamp', descending: true)
           .limit(documentLimit)
           .get();
-    } else {
+    } else if (f != null){
       querySnapshot = await postRef
           .where("ownerId", whereIn: f)
           .orderBy('timestamp', descending: true)
@@ -63,11 +67,12 @@ class _TimelineState extends State<Timeline> {
           .limit(documentLimit)
           .get();
     }
-    if (querySnapshot.docs.length < documentLimit) {
-      hasMore = false;
-    }
 
-    if(querySnapshot.docs.isNotEmpty) {
+    if(querySnapshot != null) {
+      if (querySnapshot.docs.length < documentLimit) {
+        hasMore = false;
+      }
+
       lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
       post.addAll(querySnapshot.docs);
     }
