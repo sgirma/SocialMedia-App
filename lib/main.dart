@@ -1,7 +1,6 @@
 import 'package:enawra/auth/register/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:enawra/components/life_cycle_event_handler.dart';
 import 'package:enawra/screens/mainscreen.dart';
@@ -41,14 +40,6 @@ class _MyAppState extends State<MyApp> {
         builder: (context, ThemeNotifier notifier, child) {
           return MaterialApp(
             title: Constants.appName,
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              Locale('es', ''),
-            ],
             debugShowCheckedModeBanner: false,
             theme: notifier.dark ? Constants.darkTheme : Constants.lightTheme,
             home: StreamBuilder(

@@ -193,7 +193,7 @@ class _PostsState extends State<Posts> {
             onTap: () => showProfile(context, profileId: user?.id),
             child: CircleAvatar(
               radius: 25.0,
-              backgroundImage: NetworkImage(user.photoUrl),
+              backgroundImage: user.photoUrl.isNotEmpty ? NetworkImage(user.photoUrl) : null,
             ),
           );
         }

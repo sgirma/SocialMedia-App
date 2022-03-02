@@ -3,9 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:enawra/auth/register/profile_pic.dart';
 import 'package:enawra/services/auth_service.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

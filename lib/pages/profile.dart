@@ -44,17 +44,17 @@ class _ProfileState extends State<Profile> {
   }
 
   checkIfFollowing() async {
-    var doc = await followersRef
+    var doc = await followingRef
         .doc(widget.profileId)
         .get();
 
-    // if(doc.)
+    if(doc.exists) {
+      List<dynamic> following = doc['following'];
 
-    List<dynamic> following = doc['following'];
-
-    setState(() {
-      isFollowing = following.contains(currentUserId());
-    });
+      setState(() {
+        isFollowing = following.contains(currentUserId());
+      });
+    }
   }
 
   @override
