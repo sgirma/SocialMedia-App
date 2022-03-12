@@ -7,6 +7,14 @@ class Validations {
     return null;
   }
 
+  static String validateCountry(String value) {
+    if (value.isEmpty) return 'Home town is Required.';
+    final RegExp nameExp = new RegExp(r'^[a-zA-Z]{1,}');
+    if (!nameExp.hasMatch(value))
+      return 'Please enter only alphabetical characters.';
+    return null;
+  }
+
   static String validateEmail(String value, [bool isRequried = true]) {
     if (value.isEmpty && isRequried) return 'Email is required.';
     final RegExp nameExp = new RegExp(

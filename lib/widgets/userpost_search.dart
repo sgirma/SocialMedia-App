@@ -12,8 +12,6 @@ import 'package:enawra/screens/comment.dart';
 import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/services/post_service.dart';
 import 'package:enawra/utils/firebase.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class UserPostSearch extends StatelessWidget {
@@ -74,7 +72,7 @@ class UserPostSearch extends StatelessWidget {
                             child: Text(
                               '${post?.description ?? ""}',
                               style: TextStyle(
-                                color: Color(0xff4D4D4D),
+                                color: Theme.of(context).textTheme.caption.color,
                                 fontSize: 15.0,
                               ),
                               maxLines: 2,

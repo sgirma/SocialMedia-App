@@ -38,7 +38,8 @@ class _SettingState extends State<Setting> {
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              subtitle: Text("A Fully Functional Social Media Application"),
+              subtitle: Text("A Social Media Application Dedicated to connecting "
+                  "Ethiopians Around the World"),
               trailing: Icon(Icons.error)
             ),
             Divider(),

@@ -145,9 +145,9 @@ class _RegisterState extends State<Register> {
           TextFormBuilder(
             enabled: !viewModel.loading,
             prefix: Feather.map_pin,
-            hintText: "Home Country",
+            hintText: "Home Town, Country",
             textInputAction: TextInputAction.next,
-            validateFunction: Validations.validateName,
+            validateFunction: Validations.validateCountry,
             onSaved: (String val) {
               viewModel.setCountry(val);
             },

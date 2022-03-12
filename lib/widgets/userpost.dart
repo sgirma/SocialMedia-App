@@ -72,7 +72,7 @@ class UserPost extends StatelessWidget {
                             child: Text(
                               '${post?.description ?? ""}',
                               style: TextStyle(
-                                color: Color(0xff4D4D4D),
+                                color: Theme.of(context).textTheme.caption.color,
                                 fontSize: 15.0,
                               ),
                               maxLines: 2,

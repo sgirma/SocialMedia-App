@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enawra/auth/register/register.dart';
+import 'package:enawra/services/push_notifications_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:enawra/components/life_cycle_event_handler.dart';
 import 'package:enawra/screens/mainscreen.dart';
@@ -12,6 +16,7 @@ import 'package:enawra/utils/providers.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Config.initFirebase();
+
   runApp(MyApp());
 }
 
@@ -20,10 +25,35 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+class MessageHandler extends StatefulWidget {
+  @override
+  createState() => _MessageHandlerState();
+}
+
+class _MessageHandlerState extends State<MessageHandler> {
+  
+  @override
+  void initState() {
+    super.initState();
+    final firebaseMessaging = PushNotificationsService();
+    FirebaseMessaging.instance.requestPermission();
+    firebaseMessaging.setNotifications();
+
+    firebaseMessaging.setNotifications();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return null;
+  }
+}
+
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    
+    
     WidgetsBinding.instance.addObserver(
       LifecycleEventHandler(
         detachedCallBack: () => UserService().setUserStatus(false),
