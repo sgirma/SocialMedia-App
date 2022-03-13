@@ -7,12 +7,14 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class ChatBubble extends StatefulWidget {
   final String message;
+  final String firstName;
   final MessageType type;
   final Timestamp time;
   final bool isMe;
 
   ChatBubble({
     @required this.message,
+    @required this.firstName,
     @required this.time,
     @required this.isMe,
     @required this.type,

@@ -8,6 +8,7 @@ import 'package:enawra/models/user.dart';
 import 'package:enawra/services/post_service.dart';
 import 'package:enawra/utils/firebase.dart';
 import 'package:enawra/widgets/cached_image.dart';
+import 'package:link_text/link_text.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatefulWidget {
@@ -84,6 +85,7 @@ class _CommentsState extends State<Comments> {
                             fontSize: 15.0,
                             color: Theme.of(context).textTheme.headline6.color,
                           ),
+                          autofocus: true,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
@@ -158,10 +160,13 @@ class _CommentsState extends State<Comments> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.post.description,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: LinkText(
+                      widget.post.description,
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
                   SizedBox(height: 4.0),
@@ -234,9 +239,9 @@ class _CommentsState extends State<Comments> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0.0),
-              child: Text(
+              child: LinkText(
                 comments.comment,
-                style: TextStyle(fontWeight: FontWeight.w400),
+                textStyle: TextStyle(fontWeight: FontWeight.w400),
               ),
             ),
             Divider()

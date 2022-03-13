@@ -71,10 +71,10 @@ class UserPost extends StatelessWidget {
                             padding: currentUserId() != post.ownerId ? const EdgeInsets.only(left: 5.0, top: 40.0) : const EdgeInsets.only(left: 5.0, top: 5.0) ,
                             child: Text(
                               '${post?.description ?? ""}',
-                              style: TextStyle(
-                                color: Theme.of(context).textTheme.caption.color,
-                                fontSize: 15.0,
-                              ),
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.caption.color,
+                                  fontSize: 15.0,
+                                ),
                               maxLines: 2,
                             ),
                           ),

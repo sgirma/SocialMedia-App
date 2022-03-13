@@ -115,6 +115,7 @@ class _ConversationState extends State<Conversation> {
                               messages.reversed.toList()[index].data());
                           return ChatBubble(
                               message: '${message.content}',
+                              firstName: '${user.displayName}',
                               time: message?.time,
                               isMe: message?.senderUid == user?.uid,
                               type: message?.type);
@@ -151,6 +152,7 @@ class _ConversationState extends State<Conversation> {
                               color:
                                   Theme.of(context).textTheme.headline6.color,
                             ),
+                            autofocus: true,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(10.0),
                               enabledBorder: InputBorder.none,
