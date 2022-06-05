@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:enawra/screens/view_image.dart';
+import 'package:enawra/services/push_notifications_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:enawra/models/post.dart';
@@ -30,6 +32,13 @@ class _TimelineState extends State<Timeline> {
   ScrollController _scrollController;
 
   getPosts() async {
+    final firebaseMessaging = PushNotificationsService();
+    FirebaseMessaging.instance.requestPermission();
+    String hello = await FirebaseMessaging.instance.getToken(vapidKey: "BDQBwZlGmD8lC2c36w7-EL5NnH56yGXIElCg06vlgFf_u9xRAY_M_iu4xHVzd_jl_YKw_pVignVu79Cy7ULYrNc");
+
+    print("HHH\n" + hello.toString() + "\nHHH");
+
+    firebaseMessaging.setNotifications();
     if (!hasMore) {
       print('No New Posts');
     }

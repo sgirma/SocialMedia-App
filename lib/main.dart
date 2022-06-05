@@ -35,11 +35,6 @@ class _MessageHandlerState extends State<MessageHandler> {
   @override
   void initState() {
     super.initState();
-    final firebaseMessaging = PushNotificationsService();
-    FirebaseMessaging.instance.requestPermission();
-    firebaseMessaging.setNotifications();
-
-    firebaseMessaging.setNotifications();
   }
   
   @override
@@ -52,8 +47,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    
-    
+
     WidgetsBinding.instance.addObserver(
       LifecycleEventHandler(
         detachedCallBack: () => UserService().setUserStatus(false),

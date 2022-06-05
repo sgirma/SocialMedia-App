@@ -27,6 +27,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
@@ -36,6 +38,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera to snap photo</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need this permission to get your Location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need this permission to get your Location.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

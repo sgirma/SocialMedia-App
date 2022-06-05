@@ -149,7 +149,7 @@ class _EditProfileState extends State<EditProfile> {
               initialValue: widget.user.country,
               enabled: !viewModel.loading,
               prefix: Feather.map_pin,
-              hintText: "Country",
+              hintText: "Home town, Country",
               textInputAction: TextInputAction.next,
               validateFunction: Validations.validateName,
               onSaved: (String val) {

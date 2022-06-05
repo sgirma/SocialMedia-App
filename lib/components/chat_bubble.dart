@@ -32,7 +32,7 @@ class _ChatBubbleState extends State<ChatBubble> {
       if (Theme.of(context).brightness == Brightness.dark) {
         return Colors.grey[800];
       } else {
-        return Colors.grey[200];
+        return Colors.grey[300];
       }
     }
   }
@@ -51,21 +51,21 @@ class _ChatBubbleState extends State<ChatBubble> {
         widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final radius = widget.isMe
         ? BorderRadius.only(
-            topLeft: Radius.circular(5.0),
-            bottomLeft: Radius.circular(5.0),
-            bottomRight: Radius.circular(10.0),
+            topLeft: Radius.circular(15.0),
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(15.0),
           )
         : BorderRadius.only(
-            topRight: Radius.circular(5.0),
-            bottomLeft: Radius.circular(10.0),
-            bottomRight: Radius.circular(5.0),
+            topRight: Radius.circular(15.0),
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(15.0),
           );
     return Column(
       crossAxisAlignment: align,
       children: <Widget>[
         Container(
           margin: const EdgeInsets.all(3.0),
-          padding: const EdgeInsets.all(5.0),
+          padding: widget.type == MessageType.TEXT ? const EdgeInsets.all(5.0) : const EdgeInsets.all(0.0),
           decoration: BoxDecoration(
             color: chatBubbleColor(),
             borderRadius: radius,
