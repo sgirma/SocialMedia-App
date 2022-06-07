@@ -12,6 +12,7 @@ import 'package:enawra/screens/comment.dart';
 import 'package:enawra/screens/view_image.dart';
 import 'package:enawra/services/post_service.dart';
 import 'package:enawra/utils/firebase.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class UserPostSearch extends StatelessWidget {
@@ -310,6 +311,11 @@ class UserPostSearch extends StatelessWidget {
                             ),
                           ],
                         ),
+                        new Spacer(),
+                        IconButton(
+                          icon: Icon(Feather.more_horizontal),
+                          onPressed: () => handleReport(context),
+                        )
                       ],
                     ),
                   ),
@@ -322,6 +328,54 @@ class UserPostSearch extends StatelessWidget {
         }
       },
     );
+  }
+
+  handleReport(BuildContext parentContext) {
+    //shows a simple dialog box
+    return showDialog(
+        context: parentContext,
+        builder: (context) {
+          return SimpleDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            children: [
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                  reportPost();
+                },
+                child: Text('Report Post'),
+              ),
+              Divider(),
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                  blockUser();
+                },
+                child: Text('Block User'),
+              ),
+              Divider(),
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          );
+        });
+  }
+
+  reportPost() async {
+    await postRef
+        .doc(post.postId)
+        .update({"report": FieldValue.arrayUnion(<String>[currentUserId()])});
+  }
+
+  blockUser() async {
+    await usersRef
+        .doc(post.ownerId)
+        .update({"block": FieldValue.arrayUnion(<String>[currentUserId()])});
   }
 
   showProfile(BuildContext context, {String profileId}) {

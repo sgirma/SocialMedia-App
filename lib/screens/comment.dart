@@ -8,6 +8,7 @@ import 'package:enawra/models/user.dart';
 import 'package:enawra/services/post_service.dart';
 import 'package:enawra/utils/firebase.dart';
 import 'package:enawra/widgets/cached_image.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:link_text/link_text.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -236,6 +237,10 @@ class _CommentsState extends State<Comments> {
                 timeago.format(comments.timestamp.toDate()),
                 style: TextStyle(fontSize: 12.0),
               ),
+              trailing: IconButton(
+                icon: Icon(Feather.more_horizontal),
+                onPressed: () => handleReport(context, comments, widget.post.postId, snapshot.id),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0.0),
@@ -249,6 +254,47 @@ class _CommentsState extends State<Comments> {
         );
       },
     );
+  }
+
+  handleReport(BuildContext parentContext, CommentModel comments, String postId, String commentId) {
+    //shows a simple dialog box
+    return showDialog(
+        context: parentContext,
+        builder: (context) {
+          return SimpleDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            children: [
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                  comments.userId == currentUserId() ? deleteComment(commentId)
+                      : reportComment(commentId);
+                },
+                child: Text(comments.userId == currentUserId() ? 'Delete Comment' : 'Report Comment'),
+              ),
+              Divider(),
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          );
+        });
+  }
+
+  reportComment(String cId) async {
+    await commentRef
+        .doc(widget.post.postId)
+        .collection("comments")
+        .doc(cId)
+        .update({'report': FieldValue.arrayUnion(<String>[currentUserId()])});
+  }
+
+  deleteComment(String cId) async {
+    commentRef.doc(widget.post.id).collection("comments").doc(cId).delete();
   }
 
   buildLikeButton() {

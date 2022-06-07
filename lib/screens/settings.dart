@@ -1,3 +1,5 @@
+import 'package:enawra/pages/privacy.dart';
+import 'package:enawra/pages/terms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,17 +33,17 @@ class _SettingState extends State<Setting> {
         padding: EdgeInsets.all(10.0),
         child: ListView(
           children: <Widget>[
-             ListTile(
-              title: Text(
-                "About",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
+            ListTile(
+                title: Text(
+                  "About",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ),
-              subtitle: Text("A Social Media Application Dedicated to connecting "
-                  "Ethiopians Around the World"),
-              trailing: Icon(Icons.error)
-            ),
+                subtitle:
+                    Text("A Social Media Application Dedicated to connecting "
+                        "Ethiopians Around the World"),
+                trailing: Icon(Icons.error)),
             Divider(),
             ListTile(
               title: Text(
@@ -59,6 +61,36 @@ class _SettingState extends State<Setting> {
                   value: notifier.dark,
                   activeColor: Theme.of(context).colorScheme.secondary,
                 ),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                "Terms of Use",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (_) => Terms(),
+                ),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                "Privacy Policy",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (_) => Privacy(),
+                )
               ),
             ),
           ],

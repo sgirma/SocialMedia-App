@@ -37,13 +37,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need to access your camera to snap photo</string>
+	<string>Enawra uses your device's camera to do things like help you take photos.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need this permission to get your Location.</string>
+	<string>Enawra uses this permission to get your Location and find other users near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need this permission to get your Location.</string>
+	<string>Enawra uses this permission to get your Location and find other users near you.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need to access your Photos for your to select a photo</string>
+	<string>Enawra uses access to your camera roll to do things like help you share photos.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
