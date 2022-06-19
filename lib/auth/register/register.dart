@@ -1,3 +1,5 @@
+import 'package:enawra/pages/privacy.dart';
+import 'package:enawra/pages/terms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-
   String _url = 'https://veldteck.github.io/terms';
   String _url1 = 'https://veldteck.github.io/privacy%20policy.html';
 
@@ -39,9 +40,7 @@ class _RegisterState extends State<Register> {
               children: [
                 Text(
                   'Create your account',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -73,13 +72,45 @@ class _RegisterState extends State<Register> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: _launchURL,
-                  child: Text('Terms of Use'),
-                ),
-                ElevatedButton(
-                  onPressed: _launchURL1,
-                  child: Text('Privacy Policy'),
+                Flexible(
+                  child: new RichText(
+                    text: new TextSpan(
+                      children: [
+                        new TextSpan(
+                          text: 'By signing up, you agree to our ',
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                        new TextSpan(
+                          text: 'Terms of Use ',
+                          style: new TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                          recognizer: new TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (_) => Terms(),
+                                )
+                            ),
+                        ),
+                        new TextSpan(
+                          text: 'and ',
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                        new TextSpan(
+                            text: 'Privacy Policy',
+                            style: new TextStyle(
+                                color: Theme.of(context).colorScheme.secondary),
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () => Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (_) => Privacy(),
+                                  )
+                              )
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

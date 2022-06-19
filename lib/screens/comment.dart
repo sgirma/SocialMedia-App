@@ -44,7 +44,7 @@ class _CommentsState extends State<Comments> {
           ),
         ),
         centerTitle: true,
-        title: Text('Comments'),
+        title: Text('comments'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,

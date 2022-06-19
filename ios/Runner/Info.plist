@@ -27,8 +27,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>https</string>
@@ -37,7 +35,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Enawra uses your device's camera to do things like help you take photos.</string>
+	<string>Use your camera to take and share photos with friends. See our Privacy Policy for more information.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Enawra uses this permission to get your Location and find other users near you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -63,5 +61,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FirebaseScreenReportingEnabled</key>
+    <true/>
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <true/>
 </dict>
 </plist>

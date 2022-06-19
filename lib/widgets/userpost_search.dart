@@ -373,9 +373,9 @@ class UserPostSearch extends StatelessWidget {
   }
 
   blockUser() async {
-    await usersRef
-        .doc(post.ownerId)
-        .update({"block": FieldValue.arrayUnion(<String>[currentUserId()])});
+    await blockedRef
+        .doc(currentUserId())
+        .set({"block": FieldValue.arrayUnion(<String>[post.ownerId])}, SetOptions(merge: true));
   }
 
   showProfile(BuildContext context, {String profileId}) {

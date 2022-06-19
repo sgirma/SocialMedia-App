@@ -34,7 +34,9 @@ class _TimelineState extends State<Timeline> {
   getPosts() async {
     final firebaseMessaging = PushNotificationsService();
     FirebaseMessaging.instance.requestPermission();
-    String hello = await FirebaseMessaging.instance.getToken(vapidKey: "BDQBwZlGmD8lC2c36w7-EL5NnH56yGXIElCg06vlgFf_u9xRAY_M_iu4xHVzd_jl_YKw_pVignVu79Cy7ULYrNc");
+    String hello = await FirebaseMessaging.instance.getToken(
+        vapidKey:
+            "BDQBwZlGmD8lC2c36w7-EL5NnH56yGXIElCg06vlgFf_u9xRAY_M_iu4xHVzd_jl_YKw_pVignVu79Cy7ULYrNc");
 
     print("HHH\n" + hello.toString() + "\nHHH");
 
@@ -52,39 +54,58 @@ class _TimelineState extends State<Timeline> {
 
     List<dynamic> f;
 
-    await followingRef.doc(firebaseAuth.currentUser.uid).get()
-    .then((value) => {
-      if(value.exists) {
-        f = value['following'],
-        f.add(currentUserId())
-      }
-    });
+    await followingRef.doc(firebaseAuth.currentUser.uid).get().then((value) => {
+          if (value.exists) {f = value['following'], f.add(currentUserId())}
+        });
 
-    print("heloollolllo");
 
-    if (lastDocument == null && f != null) {
-      querySnapshot = await postRef
-        .where("ownerId", whereIn: f)
-          .orderBy('timestamp', descending: true)
-          .limit(documentLimit)
-          .get();
-    } else if (f != null){
-      querySnapshot = await postRef
-          .where("ownerId", whereIn: f)
-          .orderBy('timestamp', descending: true)
-          .startAfterDocument(lastDocument)
-          .limit(documentLimit)
-          .get();
-    }
+    var chunks = [];
+    int chunkSize = 10;
 
-    if(querySnapshot != null) {
-      if (querySnapshot.docs.length < documentLimit) {
-        hasMore = false;
+    if(f != null && f.isNotEmpty) {
+      for (var i = 0; i < f.length; i += chunkSize) {
+        chunks.add(
+            f.sublist(i, i + chunkSize > f.length ? f.length : i + chunkSize));
       }
 
-      lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
-      post.addAll(querySnapshot.docs);
+
+      if (lastDocument == null && f != null) {
+        for (var chunk in chunks) {
+          querySnapshot = await postRef
+              .where("ownerId", whereIn: chunk)
+              .orderBy('timestamp', descending: true)
+              .limit(documentLimit)
+              .get();
+
+          if (querySnapshot != null) {
+            if (querySnapshot.docs.length < documentLimit) {
+              hasMore = false;
+            }
+
+            lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
+            post.addAll(querySnapshot.docs);
+          }
+        }
+      } else if (f != null) {
+        for (var chunk in chunks) {
+          querySnapshot = await postRef
+              .where('ownerId', whereIn: chunk)
+              .orderBy('timestamp', descending: true)
+              .startAfterDocument(lastDocument)
+              .limit(documentLimit)
+              .get();
+          if (querySnapshot != null) {
+            if (querySnapshot.docs.length < documentLimit) {
+              hasMore = false;
+            }
+
+            lastDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
+            post.addAll(querySnapshot.docs);
+          }
+        }
+      }
     }
+
     setState(() {
       isLoading = false;
     });
@@ -126,7 +147,8 @@ class _TimelineState extends State<Timeline> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (_) => Profile(profileId: firebaseAuth.currentUser.uid),
+                  builder: (_) =>
+                      Profile(profileId: firebaseAuth.currentUser.uid),
                 ),
               );
             },
@@ -136,7 +158,7 @@ class _TimelineState extends State<Timeline> {
       ),
       body: isLoading
           ? circularProgress(context)
-          : ListView.builder(
+          : post.isEmpty ? emptyFeed(context) : ListView.builder(
               controller: _scrollController,
               itemCount: post.length,
               itemBuilder: (context, index) {
@@ -148,6 +170,20 @@ class _TimelineState extends State<Timeline> {
                 );
               },
             ),
+    );
+  }
+
+  emptyFeed(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: Text(
+            'Follow people to add posts to your feed',
+            textScaleFactor: 1,
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      ),
     );
   }
 

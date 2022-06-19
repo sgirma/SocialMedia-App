@@ -231,36 +231,42 @@ class _ConversationState extends State<Conversation> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '${user.firstName}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
+                      Row(children: [
+                        Text(
+                          '${user.firstName}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 5.0),
-                      StreamBuilder(
-                        stream: chatRef.doc('$chatId').snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            DocumentSnapshot snap = snapshot.data;
-                            Map data = snap.data() ?? {};
-                            Map usersTyping = data['typing'] ?? {};
-                            return Text(
-                              _buildOnlineText(
-                                user,
-                                usersTyping[widget.userId] ?? false,
-                              ),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 11,
-                              ),
-                            );
-                          } else {
-                            return SizedBox();
-                          }
-                        },
-                      ),
+                        new Spacer(),
+                        IconButton(
+                          icon: Icon(Feather.more_horizontal),
+                          onPressed: () => handleReport(context),
+                        ),
+                      ]),
+                      // StreamBuilder(
+                      //   stream: chatRef.doc('$chatId').snapshots(),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.hasData) {
+                      //       DocumentSnapshot snap = snapshot.data;
+                      //       Map data = snap.data() ?? {};
+                      //       Map usersTyping = data['typing'] ?? {};
+                      //       return Text(
+                      //         _buildOnlineText(
+                      //           user,
+                      //           usersTyping[widget.userId] ?? false,
+                      //         ),
+                      //         style: TextStyle(
+                      //           fontWeight: FontWeight.w400,
+                      //           fontSize: 11,
+                      //         ),
+                      //       );
+                      //     } else {
+                      //       return SizedBox();
+                      //     }
+                      //   },
+                      // ),
                     ],
                   ),
                 ),
@@ -273,6 +279,39 @@ class _ConversationState extends State<Conversation> {
         }
       },
     );
+  }
+
+  handleReport(BuildContext parentContext) {
+    //shows a simple dialog box
+    return showDialog(
+        context: parentContext,
+        builder: (context) {
+          return SimpleDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
+            children: [
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                  blockUser();
+                },
+                child: Text('Block User'),
+              ),
+              Divider(),
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          );
+        });
+  }
+
+  blockUser() async {
+    await blockedRef.doc(currentUserId()).set(
+        {"block": FieldValue.arrayUnion(<String>[])}, SetOptions(merge: true));
   }
 
   showPhotoOptions(ConversationViewModel viewModel, var user) {
