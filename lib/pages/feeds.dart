@@ -34,11 +34,6 @@ class _TimelineState extends State<Timeline> {
   getPosts() async {
     final firebaseMessaging = PushNotificationsService();
     FirebaseMessaging.instance.requestPermission();
-    String hello = await FirebaseMessaging.instance.getToken(
-        vapidKey:
-            "BDQBwZlGmD8lC2c36w7-EL5NnH56yGXIElCg06vlgFf_u9xRAY_M_iu4xHVzd_jl_YKw_pVignVu79Cy7ULYrNc");
-
-    print("HHH\n" + hello.toString() + "\nHHH");
 
     firebaseMessaging.setNotifications();
     if (!hasMore) {

@@ -17,6 +17,23 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Config.initFirebase();
 
+  try {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    final RemoteMessage remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    // await HelperNotification.initialize()
+    // FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+    print("fcm token $fcmToken");
+    print(remoteMessage.data);
+    print(remoteMessage.notification.body);
+    print("remote messageeeeee: $remoteMessage");
+
+    // if(remoteMessage != null) {
+    //
+    // }
+
+  } catch(e) {}
+
   runApp(MyApp());
 }
 
